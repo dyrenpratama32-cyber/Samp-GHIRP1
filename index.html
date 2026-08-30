@@ -1,47 +1,152 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="id">
 <head>
-<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Toko SAMP</title><link rel="stylesheet" href="assets/style.css">
-<script src="https://app.sandbox.midtrans.com/snap/snap.js" data-client-key="ISI_CLIENT_KEY_MIDTRANS"></script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SA-MP Shop & Cart</title>
+    <style>
+        body { font-family: Arial, sans-serif; background: #1a1a1a; color: #fff; margin: 0; padding: 20px; }
+        h1, h2 { text-align: center; color: #ff9900; }
+        
+        /* Container Utama Layout Grid */
+        .main-layout { display: flex; flex-wrap: wrap; gap: 20px; max-width: 1200px; margin: auto; }
+        .shop-section { flex: 2; min-width: 300px; }
+        .cart-section { flex: 1; min-width: 280px; background: #2b2b2b; padding: 15px; border-radius: 8px; height: fit-content; }
+        
+        /* Katalog Produk */
+        .grid-container { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 15px; }
+        .card { background: #2b2b2b; border-radius: 8px; padding: 10px; text-align: center; border: 1px solid #444; }
+        .card img { width: 100%; height: 120px; object-fit: cover; border-radius: 5px; }
+        .price { color: #00ff22; font-weight: bold; margin: 5px 0; }
+        
+        /* Tombol Beli */
+        .btn-buy { background: #ff9900; color: #000; border: none; padding: 8px 15px; border-radius: 5px; cursor: pointer; font-weight: bold; width: 100%; }
+        .btn-buy:hover { background: #e68a00; }
+        
+        /* Panel Keranjang & Pesanan */
+        .cart-item { display: flex; justify-content: space-between; border-bottom: 1px solid #444; padding: 8px 0; }
+        .total-box { font-size: 1.2em; font-weight: bold; margin-top: 15px; text-align: right; color: #00ff22; }
+        .btn-checkout { background: #00ff22; color: #000; border: none; padding: 10px; border-radius: 5px; width: 100%; font-weight: bold; margin-top: 10px; cursor: pointer; }
+        .order-history { margin-top: 15px; background: #1a1a1a; padding: 10px; border-radius: 5px; font-size: 0.9em; max-height: 150px; overflow-y: auto; }
+    </style>
 </head>
 <body>
-<header><div class="hamb">☰</div><div class="logo">💎 TOKO SAMP</div><a href="admin/login.php" class="admin">Admin</a></header>
-<main>
-<h1>Toko SAMP</h1>
-<section class="card"><div class="step"><b>1</b><h2>Masukkan Player ID</h2></div>
-<input id="player" placeholder="Masukkan Player ID / Username"><p>Pastikan ID/username SAMP benar sebelum order.</p></section>
 
-<section class="card"><div class="step"><b>2</b><h2>Pilih Produk</h2></div><div id="products" class="products"></div></section>
+    <h1>SA-MP DEALERSHIP STORE</h1>
 
-<section class="card"><div class="step"><b>3</b><h2>Detail & Pembayaran</h2></div>
-<div class="summary">Player: <strong id="sp">-</strong><br>Produk: <strong id="sn">-</strong><br><span class="total">Total: <span id="st">Rp0</span></span></div>
-<button id="order">💳 BAYAR SEKARANG</button><div id="msg"></div>
-</section>
-</main>
-<script>
-let selected=null;
-const rp=n=>'Rp'+Number(n).toLocaleString('id-ID');
-async function load(){
- const r=await fetch('api/products.php'); const data=await r.json();
- products.innerHTML=data.map((x,i)=>`<div class="product ${i?'':'active'}" data-id="${x.id}"><h3>${x.name}</h3><div class="price">${rp(x.price)}</div><small>${x.description||''}</small></div>`).join('');
- selected=data[0];update();
- document.querySelectorAll('.product').forEach(el=>el.onclick=()=>{document.querySelectorAll('.product').forEach(x=>x.classList.remove('active'));el.classList.add('active');selected=data.find(x=>x.id==el.dataset.id);update()});
-}
-function update(){sp.textContent=player.value||'-';sn.textContent=selected?.name||'-';st.textContent=selected?rp(selected.price):'Rp0'}
-player.oninput=update;
-order.onclick=async()=>{
- msg.textContent='Membuat pembayaran...';
- if(!player.value.trim()||!selected){msg.textContent='Isi Player ID dan pilih produk.';return}
- const r=await fetch('api/payment.php',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({player_id:player.value.trim(),product_id:selected.id})});
- const d=await r.json();
- if(!r.ok||!d.token){msg.textContent=d.message||'Gagal membuat pembayaran.';return}
- snap.pay(d.token,{
-  onSuccess:function(result){msg.textContent='Pembayaran berhasil. Kode order: '+d.order_code;},
-  onPending:function(result){msg.textContent='Pembayaran masih menunggu. Kode order: '+d.order_code;},
-  onError:function(result){msg.textContent='Pembayaran gagal. Silakan coba lagi.';},
-  onClose:function(){msg.textContent='Halaman pembayaran ditutup. Kamu bisa mencoba lagi.';}
- });
-};
-load();
-</script></body></html>
+    <div class="main-layout">
+        <!-- KATALOG PRODUK -->
+        <div class="shop-section">
+            <h2>Katalog Kendaraan</h2>
+            <div class="grid-container">
+                
+                <div class="card">
+                    <img src="https://wiki.sa-mp.com/w/images/d/d1/Vehicle_411.jpg" alt="Infernus">
+                    <h3>Infernus</h3>
+                    <div class="price">$250,000</div>
+                    <button class="btn-buy" onclick="addToCart('Infernus', 250000)">+ Tambah</button>
+                </div>
+
+                <div class="card">
+                    <img src="https://wiki.sa-mp.com/w/images/e/e0/Vehicle_522.jpg" alt="NRG-500">
+                    <h3>NRG-500</h3>
+                    <div class="price">$100,000</div>
+                    <button class="btn-buy" onclick="addToCart('NRG-500', 100000)">+ Tambah</button>
+                </div>
+
+                <div class="card">
+                    <img src="https://wiki.sa-mp.com/w/images/0/07/Vehicle_519.jpg" alt="Shamal">
+                    <h3>Shamal Jet</h3>
+                    <div class="price">$1,200,000</div>
+                    <button class="btn-buy" onclick="addToCart('Shamal Jet', 1200000)">+ Tambah</button>
+                </div>
+
+                <div class="card">
+                    <img src="https://wiki.sa-mp.com/w/images/d/d7/Vehicle_487.jpg" alt="Maverick">
+                    <h3>Maverick</h3>
+                    <div class="price">$500,000</div>
+                    <button class="btn-buy" onclick="addToCart('Maverick Heli', 500000)">+ Tambah</button>
+                </div>
+
+            </div>
+        </div>
+
+        <!-- PANEL KERANJANG & PESANAN PLAYER -->
+        <div class="cart-section">
+            <h2>🛒 Keranjang Anda</h2>
+            <div id="cart-list">
+                <p style="color: #888; text-align: center;">Keranjang masih kosong</p>
+            </div>
+            
+            <div class="total-box">
+                Total: $<span id="total-price">0</span>
+            </div>
+            
+            <button class="btn-checkout" onclick="checkout()">Checkout / Beli Sekarang</button>
+
+            <!-- PANEL HASIL TRANSAKSI PLAYER -->
+            <h3 style="margin-top: 20px; font-size: 1em;">📋 Riwayat Pembelian Player:</h3>
+            <div class="order-history" id="order-history">
+                <span style="color: #888;">Belum ada transaksi...</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- JAVASCRIPT SYSTEM -->
+    <script>
+        let cart = [];
+        let total = 0;
+
+        function addToCart(name, price) {
+            cart.push({ name, price });
+            total += price;
+            updateCartUI();
+        }
+
+        function updateCartUI() {
+            const cartList = document.getElementById('cart-list');
+            const totalPrice = document.getElementById('total-price');
+
+            if (cart.length === 0) {
+                cartList.innerHTML = '<p style="color: #888; text-align: center;">Keranjang masih kosong</p>';
+            } else {
+                cartList.innerHTML = '';
+                cart.forEach((item, index) => {
+                    cartList.innerHTML += `
+                        <div class="cart-item">
+                            <span>${item.name}</span>
+                            <span>$${item.price.toLocaleString()}</span>
+                        </div>
+                    `;
+                });
+            }
+            totalPrice.innerText = total.toLocaleString();
+        }
+
+        function checkout() {
+            if (cart.length === 0) {
+                alert("Keranjang Anda masih kosong!");
+                return;
+            }
+
+            const history = document.getElementById('order-history');
+            const time = new Date().toLocaleTimeString();
+            
+            let purchasedItems = cart.map(i => i.name).join(", ");
+            
+            if (history.innerHTML.includes("Belum ada transaksi")) {
+                history.innerHTML = "";
+            }
+
+            history.innerHTML = `<div>[${time}] Berhasil Membeli: <b>${purchasedItems}</b> ($${total.toLocaleString()})</div>` + history.innerHTML;
+
+            alert("Pembelian Berhasil! Total yang dibayar: $" + total.toLocaleString());
+            
+            // Reset Keranjang
+            cart = [];
+            total = 0;
+            updateCartUI();
+        }
+    </script>
+</body>
+</html>
