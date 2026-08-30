@@ -1,1 +1,530 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GHIRP Store - Vehicle Limited Shop</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        .modal {
+            transition: opacity 0.25s ease;
+        }
+        body.modal-active {
+            overflow-x: hidden;
+            overflow-y: hidden;
+        }
+    </style>
+</head>
+<body class="bg-slate-900 text-slate-100 font-sans min-h-screen flex flex-col justify-between">
 
+    <!-- NAVBAR -->
+    <nav class="bg-slate-800 border-b border-slate-700 sticky top-0 z-40 shadow-lg">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-between h-16">
+                <!-- LOGO -->
+                <div class="flex items-center space-x-3">
+                    <span class="text-xl sm:text-2xl font-black tracking-wider text-blue-500">GHIRP <span class="text-red-500">STORE</span></span>
+                </div>
+
+                <!-- NAV MENU (TAMPIL DI HP & LAPTOP) -->
+                <div class="flex items-center space-x-2 sm:space-x-4 font-medium text-xs sm:text-sm">
+                    <!-- TOMBOL VIP STATUS (SELALU MUNCUL DI HP & PC) -->
+                    <button onclick="toggleVipModal()" class="bg-amber-500/10 border border-amber-500/40 text-amber-400 hover:bg-amber-500 hover:text-slate-950 font-bold py-1.5 px-2.5 sm:px-3 rounded-lg transition flex items-center">
+                        <i class="fa-solid fa-crown mr-1 text-amber-400"></i> VIP Status
+                    </button>
+
+                    <!-- DEV PANEL -->
+                    <a href="#" id="devPanelNav" onclick="openDevPanel()" class="hidden text-red-400 hover:text-red-300 transition"><i class="fa-solid fa-gear mr-1"></i> Dev</a>
+
+                    <!-- KERANJANG -->
+                    <button onclick="toggleCartModal()" class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-1.5 px-3 rounded-lg flex items-center shadow-md transition">
+                        <i class="fa-solid fa-cart-shopping mr-1.5"></i> Keranjang 
+                        <span id="cartCount" class="ml-1.5 bg-red-500 text-white text-xs px-2 py-0.5 rounded-full">0</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- HERO SECTION -->
+    <header class="bg-gradient-to-b from-slate-800 to-slate-900 py-10 sm:py-12 border-b border-slate-800 text-center">
+        <div class="max-w-4xl mx-auto px-4">
+            <h1 class="text-3xl sm:text-5xl font-extrabold text-white tracking-tight mb-3">Toko Kendaraan & VIP GHIRP</h1>
+            <p class="text-slate-400 text-sm sm:text-lg">Dapatkan kendaraan langka, militer, eksklusif, serta status VIP untuk karakter Roleplay kamu!</p>
+        </div>
+    </header>
+
+    <!-- MAIN CONTENT / CATALOG -->
+    <main id="vehicles" class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 flex-grow">
+        <div class="flex justify-between items-center mb-6">
+            <h2 class="text-xl sm:text-2xl font-bold text-white border-l-4 border-blue-500 pl-3">Koleksi Kendaraan Terbatas</h2>
+            <button onclick="toggleVipModal()" class="bg-amber-500 text-slate-950 text-xs font-bold py-2 px-3 rounded-lg shadow hover:bg-amber-400 transition flex items-center">
+                <i class="fa-solid fa-crown mr-1"></i> Beli VIP
+            </button>
+        </div>
+        
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6" id="productGrid">
+            <!-- Product Item 1 -->
+            <div class="bg-slate-800 border border-slate-700 rounded-xl overflow-hidden shadow-lg flex flex-col justify-between">
+                <div class="relative">
+                    <img src="https://images.unsplash.com/photo-1558981806-ec527fa84c39?auto=format&fit=crop&w=600&q=80" alt="NRG-500" class="w-full h-48 object-cover">
+                    <span class="absolute top-2 right-2 bg-red-600 text-white text-xs font-bold px-2.5 py-1 rounded">LIMITED MOTOR</span>
+                </div>
+                <div class="p-5 flex-grow flex flex-col justify-between">
+                    <div>
+                        <h3 class="text-xl font-bold text-white">NRG-500</h3>
+                        <p class="text-slate-400 text-sm mt-2">Motor sport tercepat di San Andreas. Cocok untuk Anda yang menyukai kecepatan tinggi dan kelincahan.</p>
+                    </div>
+                    <div class="mt-6 flex items-center justify-between border-t border-slate-700 pt-4">
+                        <div>
+                            <span class="block text-xs text-slate-400">Sisa Stok: <strong class="text-emerald-400">3 Unit</strong></span>
+                            <span class="text-lg font-bold text-blue-400">Rp 150.000</span>
+                        </div>
+                        <button onclick="addToCart('NRG-500', 150000)" class="bg-blue-600 hover:bg-blue-700 text-white text-sm font-semibold py-2 px-3 rounded-lg transition">
+                            + Keranjang
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Product Item 2 -->
+            <div class="bg-slate-800 border border-slate-700 rounded-xl overflow-hidden shadow-lg flex flex-col justify-between">
+                <div class="relative">
+                    <img src="https://images.unsplash.com/photo-1508614589041-895b88991e3e?auto=format&fit=crop&w=600&q=80" alt="Maverick" class="w-full h-48 object-cover">
+                    <span class="absolute top-2 right-2 bg-amber-500 text-slate-900 text-xs font-bold px-2.5 py-1 rounded">EKSKLUSIF UDARA</span>
+                </div>
+                <div class="p-5 flex-grow flex flex-col justify-between">
+                    <div>
+                        <h3 class="text-xl font-bold text-white">Maverick Helicopter</h3>
+                        <p class="text-slate-400 text-sm mt-2">Jelajahi langit San Andreas tanpa hambatan. Kendaraan udara mewah untuk mobilitas tinggi.</p>
+                    </div>
+                    <div class="mt-6 flex items-center justify-between border-t border-slate-700 pt-4">
+                        <div>
+                            <span class="block text-xs text-slate-400">Sisa Stok: <strong class="text-emerald-400">2 Unit</strong></span>
+                            <span class="text-lg font-bold text-blue-400">Rp 250.000</span>
+                        </div>
+                        <button onclick="addToCart('Maverick Helicopter', 250000)" class="bg-blue-600 hover:bg-blue-700 text-white text-sm font-semibold py-2 px-3 rounded-lg transition">
+                            + Keranjang
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Product Item 3 -->
+            <div class="bg-slate-800 border border-slate-700 rounded-xl overflow-hidden shadow-lg flex flex-col justify-between">
+                <div class="relative">
+                    <img src="https://images.unsplash.com/photo-1540959733332-eab4deabeeaf?auto=format&fit=crop&w=600&q=80" alt="Shamal Jet" class="w-full h-48 object-cover">
+                    <span class="absolute top-2 right-2 bg-purple-600 text-white text-xs font-bold px-2.5 py-1 rounded">SUPER LIMITED</span>
+                </div>
+                <div class="p-5 flex-grow flex flex-col justify-between">
+                    <div>
+                        <h3 class="text-xl font-bold text-white">Shamal Jet Plane</h3>
+                        <p class="text-slate-400 text-sm mt-2">Pesawat jet pribadi mewah kelas bisnis. Cocok untuk penerbangan antar kota dan acara VIP.</p>
+                    </div>
+                    <div class="mt-6 flex items-center justify-between border-t border-slate-700 pt-4">
+                        <div>
+                            <span class="block text-xs text-slate-400">Sisa Stok: <strong class="text-amber-400">1 Unit</strong></span>
+                            <span class="text-lg font-bold text-blue-400">Rp 500.000</span>
+                        </div>
+                        <button onclick="addToCart('Shamal Jet Plane', 500000)" class="bg-blue-600 hover:bg-blue-700 text-white text-sm font-semibold py-2 px-3 rounded-lg transition">
+                            + Keranjang
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Product Item 4 -->
+            <div class="bg-slate-800 border border-slate-700 rounded-xl overflow-hidden shadow-lg flex flex-col justify-between">
+                <div class="relative">
+                    <img src="https://images.unsplash.com/photo-1563720223185-11003d516935?auto=format&fit=crop&w=600&q=80" alt="Rhino Tank" class="w-full h-48 object-cover">
+                    <span class="absolute top-2 right-2 bg-emerald-600 text-white text-xs font-bold px-2.5 py-1 rounded">MILITER / RARE</span>
+                </div>
+                <div class="p-5 flex-grow flex flex-col justify-between">
+                    <div>
+                        <h3 class="text-xl font-bold text-white">Rhino Tank (Militer)</h3>
+                        <p class="text-slate-400 text-sm mt-2">Kendaraan tempur lapis baja militer super tangguh dengan pertahanan ekstra kuat.</p>
+                    </div>
+                    <div class="mt-6 flex items-center justify-between border-t border-slate-700 pt-4">
+                        <div>
+                            <span class="block text-xs text-slate-400">Sisa Stok: <strong class="text-amber-400">1 Unit</strong></span>
+                            <span class="text-lg font-bold text-blue-400">Rp 750.000</span>
+                        </div>
+                        <button onclick="addToCart('Rhino Tank (Militer)', 750000)" class="bg-blue-600 hover:bg-blue-700 text-white text-sm font-semibold py-2 px-3 rounded-lg transition">
+                            + Keranjang
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Product Item 5 -->
+            <div class="bg-slate-800 border border-slate-700 rounded-xl overflow-hidden shadow-lg flex flex-col justify-between">
+                <div class="relative">
+                    <img src="https://images.unsplash.com/photo-1533473359331-0135ef1b58bf?auto=format&fit=crop&w=600&q=80" alt="Patriot" class="w-full h-48 object-cover">
+                    <span class="absolute top-2 right-2 bg-emerald-600 text-white text-xs font-bold px-2.5 py-1 rounded">MILITER</span>
+                </div>
+                <div class="p-5 flex-grow flex flex-col justify-between">
+                    <div>
+                        <h3 class="text-xl font-bold text-white">Patriot Off-Road Militer</h3>
+                        <p class="text-slate-400 text-sm mt-2">Mobil Jeep SUV taktis militer handal untuk segala medan berat dan area pegunungan.</p>
+                    </div>
+                    <div class="mt-6 flex items-center justify-between border-t border-slate-700 pt-4">
+                        <div>
+                            <span class="block text-xs text-slate-400">Sisa Stok: <strong class="text-emerald-400">4 Unit</strong></span>
+                            <span class="text-lg font-bold text-blue-400">Rp 200.000</span>
+                        </div>
+                        <button onclick="addToCart('Patriot Off-Road', 200000)" class="bg-blue-600 hover:bg-blue-700 text-white text-sm font-semibold py-2 px-3 rounded-lg transition">
+                            + Keranjang
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Product Item 6 -->
+            <div class="bg-slate-800 border border-slate-700 rounded-xl overflow-hidden shadow-lg flex flex-col justify-between">
+                <div class="relative">
+                    <img src="https://images.unsplash.com/photo-1617814076367-b759c7d7e738?auto=format&fit=crop&w=600&q=80" alt="Infernus" class="w-full h-48 object-cover">
+                    <span class="absolute top-2 right-2 bg-blue-600 text-white text-xs font-bold px-2.5 py-1 rounded">RARE SPORT</span>
+                </div>
+                <div class="p-5 flex-grow flex flex-col justify-between">
+                    <div>
+                        <h3 class="text-xl font-bold text-white">Infernus Sport</h3>
+                        <p class="text-slate-400 text-sm mt-2">Supercar kelas atas dengan desain aerodinamis dan performa mesin maksimal di jalanan kota.</p>
+                    </div>
+                    <div class="mt-6 flex items-center justify-between border-t border-slate-700 pt-4">
+                        <div>
+                            <span class="block text-xs text-slate-400">Sisa Stok: <strong class="text-emerald-400">5 Unit</strong></span>
+                            <span class="text-lg font-bold text-blue-400">Rp 175.000</span>
+                        </div>
+                        <button onclick="addToCart('Infernus Sport', 175000)" class="bg-blue-600 hover:bg-blue-700 text-white text-sm font-semibold py-2 px-3 rounded-lg transition">
+                            + Keranjang
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- MODAL VIP STATUS -->
+    <div id="vipModal" class="modal opacity-0 pointer-events-none fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-sm">
+        <div class="bg-slate-800 border border-amber-500/50 rounded-2xl max-w-3xl w-full p-6 shadow-2xl overflow-y-auto max-h-[90vh]">
+            <div class="flex justify-between items-center mb-6 pb-2 border-b border-slate-700">
+                <h3 class="text-xl sm:text-2xl font-black text-amber-400 flex items-center"><i class="fa-solid fa-crown mr-2"></i> Pilihan Paket VIP GHIRP</h3>
+                <button onclick="toggleVipModal()" class="text-slate-400 hover:text-white text-2xl">&times;</button>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                <!-- VIP Silver -->
+                <div class="bg-slate-900 border border-slate-700 rounded-xl p-4 flex flex-col justify-between text-center hover:border-slate-400 transition">
+                    <div>
+                        <div class="text-slate-300 font-bold text-lg">VIP Silver</div>
+                        <div class="text-2xl font-black text-white my-2">Rp 50.000 <span class="text-xs text-slate-400 font-normal">/30 hari</span></div>
+                        <ul class="text-xs text-slate-300 space-y-2 text-left my-4 border-t border-slate-800 pt-3">
+                            <li>✓ Tag VIP Silver in-game</li>
+                            <li>✓ Bonus Paycheck 1.5x</li>
+                            <li>✓ Slot Kendaraan +1</li>
+                        </ul>
+                    </div>
+                    <button onclick="addToCart('VIP Silver (30 Hari)', 50000); toggleVipModal();" class="w-full bg-slate-700 hover:bg-slate-600 text-white font-bold py-2 rounded-lg text-xs transition">
+                        + Ke Keranjang
+                    </button>
+                </div>
+
+                <!-- VIP Gold -->
+                <div class="bg-slate-900 border-2 border-amber-500 rounded-xl p-4 flex flex-col justify-between text-center relative shadow-lg">
+                    <span class="absolute -top-3 left-1/2 -translate-x-1/2 bg-amber-500 text-slate-950 text-[10px] font-black px-2 py-0.5 rounded-full uppercase">Paling Populer</span>
+                    <div>
+                        <div class="text-amber-400 font-bold text-lg">VIP Gold</div>
+                        <div class="text-2xl font-black text-white my-2">Rp 100.000 <span class="text-xs text-slate-400 font-normal">/30 hari</span></div>
+                        <ul class="text-xs text-slate-300 space-y-2 text-left my-4 border-t border-slate-800 pt-3">
+                            <li>✓ Tag VIP Gold in-game</li>
+                            <li>✓ Bonus Paycheck 2x</li>
+                            <li>✓ Slot Kendaraan +2</li>
+                            <li>✓ Akses Fitur /vspawn</li>
+                        </ul>
+                    </div>
+                    <button onclick="addToCart('VIP Gold (30 Hari)', 100000); toggleVipModal();" class="w-full bg-amber-500 hover:bg-amber-600 text-slate-950 font-bold py-2 rounded-lg text-xs transition">
+                        + Ke Keranjang
+                    </button>
+                </div>
+
+                <!-- VIP Platinum -->
+                <div class="bg-slate-900 border border-purple-500/50 rounded-xl p-4 flex flex-col justify-between text-center hover:border-purple-500 transition">
+                    <div>
+                        <div class="text-purple-400 font-bold text-lg">VIP Platinum</div>
+                        <div class="text-2xl font-black text-white my-2">Rp 200.000 <span class="text-xs text-slate-400 font-normal">/30 hari</span></div>
+                        <ul class="text-xs text-slate-300 space-y-2 text-left my-4 border-t border-slate-800 pt-3">
+                            <li>✓ Tag VIP Platinum in-game</li>
+                            <li>✓ Bonus Paycheck 3x</li>
+                            <li>✓ Slot Kendaraan +4</li>
+                            <li>✓ Custom Neon & Plate</li>
+                            <li>✓ Priority Queue Server</li>
+                        </ul>
+                    </div>
+                    <button onclick="addToCart('VIP Platinum (30 Hari)', 200000); toggleVipModal();" class="w-full bg-purple-600 hover:bg-purple-700 text-white font-bold py-2 rounded-lg text-xs transition">
+                        + Ke Keranjang
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- MODAL SAMBUTAN (WELCOME MODAL) -->
+    <div id="welcomeModal" class="modal fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-sm">
+        <div class="bg-slate-800 border border-slate-700 rounded-2xl max-w-lg w-full p-6 shadow-2xl transform transition-all">
+            <div class="text-center">
+                <div class="w-16 h-16 bg-blue-600/20 text-blue-500 rounded-full flex items-center justify-center mx-auto mb-4 border border-blue-500/30">
+                    <i class="fa-solid fa-city text-3xl"></i>
+                </div>
+                <h2 class="text-2xl font-black text-white uppercase tracking-wide">
+                    Garuda Horizon Roleplay <br><span class="text-blue-500 text-lg">(GHIRP)</span>
+                </h2>
+                <div class="w-12 h-1 bg-red-500 mx-auto my-3 rounded-full"></div>
+            </div>
+            
+            <div class="text-slate-300 text-sm space-y-3 mt-4 text-center leading-relaxed">
+                <p>🇮🇩 <strong>Selamat Datang Warga Baru!</strong></p>
+                <p>Selamat bergabung di Kota <strong>Garuda Indonesia Roleplay</strong>. Siapkan alur cerita (*storyline*) karaktermu, patuhi aturan kota, dan mulailah membangun karir serta kehidupan impianmu di San Andreas!</p>
+                <div class="bg-slate-900/60 p-3 rounded-lg border border-slate-700/50 text-xs text-left text-slate-400 space-y-1">
+                    <p><i class="fa-solid fa-circle-info text-blue-400 mr-1"></i> Gunakan toko ini untuk memesan Kendaraan Limited & Status VIP.</p>
+                    <p><i class="fa-solid fa-shield-halved text-emerald-400 mr-1"></i> Selalu junjung tinggi kejujuran & kualitas Roleplay.</p>
+                </div>
+            </div>
+
+            <div class="mt-6 flex flex-col sm:flex-row gap-3">
+                <button onclick="closeWelcomeModal()" class="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-2.5 px-4 rounded-xl shadow-lg transition text-sm">
+                    🚀 Masuk ke Toko / Kota
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- MODAL KERANJANG -->
+    <div id="cartModal" class="modal opacity-0 pointer-events-none fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/75">
+        <div class="bg-slate-800 border border-slate-700 rounded-xl max-w-md w-full p-6 shadow-xl">
+            <div class="flex justify-between items-center mb-4 pb-2 border-b border-slate-700">
+                <h3 class="text-lg font-bold text-white"><i class="fa-solid fa-cart-shopping mr-2 text-blue-400"></i> Keranjang Belanja</h3>
+                <button onclick="toggleCartModal()" class="text-slate-400 hover:text-white text-xl">&times;</button>
+            </div>
+            
+            <div id="cartItems" class="max-h-60 overflow-y-auto space-y-3 mb-4 pr-1">
+                <p class="text-slate-400 text-sm text-center py-4">Keranjang masih kosong.</p>
+            </div>
+
+            <div id="checkoutForm" class="hidden border-t border-slate-700 pt-4 space-y-3">
+                <div>
+                    <label class="block text-xs font-semibold text-slate-300 mb-1">Nama IC / Character SA-MP *</label>
+                    <input type="text" id="icNameInput" placeholder="Contoh: Budi_Santoso" class="w-full bg-slate-900 border border-slate-700 rounded px-3 py-2 text-sm text-white focus:outline-none focus:border-blue-500">
+                </div>
+            </div>
+
+            <div class="border-t border-slate-700 pt-4 mt-4 flex items-center justify-between">
+                <div>
+                    <span class="text-xs text-slate-400 block">Total:</span>
+                    <span id="cartTotal" class="text-xl font-bold text-emerald-400">Rp 0</span>
+                </div>
+                <button onclick="processCheckout()" class="bg-emerald-600 hover:bg-emerald-700 text-white font-bold py-2 px-5 rounded-lg transition text-sm">
+                    Checkout
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- MODAL DEV PANEL -->
+    <div id="devModal" class="modal opacity-0 pointer-events-none fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80">
+        <div class="bg-slate-800 border border-red-500/40 rounded-xl max-w-2xl w-full p-6 shadow-2xl">
+            <div class="flex justify-between items-center mb-4 pb-2 border-b border-slate-700">
+                <h3 class="text-lg font-bold text-red-400"><i class="fa-solid fa-code mr-2"></i> Developer Panel - Data Pesanan</h3>
+                <button onclick="closeDevPanel()" class="text-slate-400 hover:text-white text-xl">&times;</button>
+            </div>
+
+            <div class="overflow-x-auto max-h-80">
+                <table class="w-full text-left text-sm text-slate-300">
+                    <thead class="bg-slate-900 text-slate-400 uppercase text-xs">
+                        <tr>
+                            <th class="p-3">Waktu</th>
+                            <th class="p-3">Nama IC</th>
+                            <th class="p-3">Item Dipesan</th>
+                            <th class="p-3">Total</th>
+                        </tr>
+                    </thead>
+                    <tbody id="devOrderTableBody" class="divide-y divide-slate-700">
+                        <!-- Populated by JS -->
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="mt-4 pt-3 border-t border-slate-700 flex justify-between">
+                <button onclick="clearDevOrders()" class="bg-red-600/20 text-red-400 hover:bg-red-600 hover:text-white text-xs font-semibold px-3 py-2 rounded transition">
+                    Hapus Semua Record Data
+                </button>
+                <button onclick="closeDevPanel()" class="bg-slate-700 hover:bg-slate-600 text-white text-xs font-semibold px-4 py-2 rounded transition">
+                    Tutup
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- FOOTER -->
+    <footer class="bg-slate-950 border-t border-slate-800 py-6 text-center text-xs text-slate-500">
+        <p>&copy; 2026 GHIRP (Garuda Horizon Roleplay). All rights reserved.</p>
+    </footer>
+
+    <!-- JAVASCRIPT LOGIC -->
+    <script>
+        let cart = [];
+
+        // Dev Panel Shortcut: Ctrl + Shift + D
+        document.addEventListener('keydown', function(e) {
+            if (e.ctrlKey && e.shiftKey && (e.key === 'D' || e.key === 'd')) {
+                e.preventDefault();
+                let pwd = prompt("Masukkan Password Developer:");
+                if (pwd === "admin123") {
+                    localStorage.setItem('is_dev', 'true');
+                    checkDevStatus();
+                    openDevPanel();
+                } else if (pwd !== null) {
+                    alert("Password Salah!");
+                }
+            }
+        });
+
+        function checkDevStatus() {
+            if (localStorage.getItem('is_dev') === 'true') {
+                document.getElementById('devPanelNav').classList.remove('hidden');
+            }
+        }
+
+        function toggleVipModal() {
+            const modal = document.getElementById('vipModal');
+            modal.classList.toggle('opacity-0');
+            modal.classList.toggle('pointer-events-none');
+            document.body.classList.toggle('modal-active');
+        }
+
+        function closeWelcomeModal() {
+            const modal = document.getElementById('welcomeModal');
+            modal.classList.add('opacity-0', 'pointer-events-none');
+            document.body.classList.remove('modal-active');
+        }
+
+        function addToCart(name, price) {
+            cart.push({ name, price });
+            updateCart();
+            alert(`"${name}" berhasil ditambahkan ke keranjang!`);
+        }
+
+        function updateCart() {
+            document.getElementById('cartCount').innerText = cart.length;
+            const itemsContainer = document.getElementById('cartItems');
+            const checkoutForm = document.getElementById('checkoutForm');
+            
+            if (cart.length === 0) {
+                itemsContainer.innerHTML = '<p class="text-slate-400 text-sm text-center py-4">Keranjang masih kosong.</p>';
+                checkoutForm.classList.add('hidden');
+            } else {
+                checkoutForm.classList.remove('hidden');
+                itemsContainer.innerHTML = cart.map((item, index) => `
+                    <div class="flex justify-between items-center bg-slate-900 p-2.5 rounded-lg border border-slate-700 text-sm">
+                        <span class="text-white font-medium">${item.name}</span>
+                        <div class="flex items-center space-x-3">
+                            <span class="text-blue-400 font-bold">Rp ${item.price.toLocaleString('id-ID')}</span>
+                            <button onclick="removeFromCart(${index})" class="text-red-400 hover:text-red-300"><i class="fa-solid fa-trash-can"></i></button>
+                        </div>
+                    </div>
+                `).join('');
+            }
+
+            const total = cart.reduce((sum, item) => sum + item.price, 0);
+            document.getElementById('cartTotal').innerText = `Rp ${total.toLocaleString('id-ID')}`;
+        }
+
+        function removeFromCart(index) {
+            cart.splice(index, 1);
+            updateCart();
+        }
+
+        function toggleCartModal() {
+            const modal = document.getElementById('cartModal');
+            modal.classList.toggle('opacity-0');
+            modal.classList.toggle('pointer-events-none');
+            document.body.classList.toggle('modal-active');
+        }
+
+        function processCheckout() {
+            if (cart.length === 0) {
+                alert("Keranjang kamu masih kosong!");
+                return;
+            }
+
+            const icName = document.getElementById('icNameInput').value.trim();
+            if (!icName) {
+                alert("Harap masukkan Nama IC / Character SA-MP kamu!");
+                return;
+            }
+
+            const total = cart.reduce((sum, item) => sum + item.price, 0);
+            const itemsList = cart.map(i => i.name).join(', ');
+            
+            const newOrder = {
+                timestamp: new Date().toLocaleString('id-ID'),
+                icName: icName,
+                items: itemsList,
+                total: total
+            };
+
+            // Save order to LocalStorage
+            let existingOrders = JSON.parse(localStorage.getItem('ghirp_orders')) || [];
+            existingOrders.push(newOrder);
+            localStorage.setItem('ghirp_orders', JSON.stringify(existingOrders));
+
+            alert(`Terima kasih ${icName}!\nPesanan kamu (${itemsList}) telah tercatat.\nSilakan konfirmasi ke Admin/Owner.`);
+            
+            cart = [];
+            document.getElementById('icNameInput').value = '';
+            updateCart();
+            toggleCartModal();
+        }
+
+        function openDevPanel() {
+            const modal = document.getElementById('devModal');
+            const tbody = document.getElementById('devOrderTableBody');
+            const orders = JSON.parse(localStorage.getItem('ghirp_orders')) || [];
+
+            if (orders.length === 0) {
+                tbody.innerHTML = '<tr><td colspan="4" class="p-4 text-center text-slate-500">Belum ada pesanan masuk.</td></tr>';
+            } else {
+                tbody.innerHTML = orders.map(order => `
+                    <tr>
+                        <td class="p-3 text-xs text-slate-400">${order.timestamp}</td>
+                        <td class="p-3 font-semibold text-white">${order.icName}</td>
+                        <td class="p-3 text-blue-300">${order.items}</td>
+                        <td class="p-3 text-emerald-400 font-bold">Rp ${order.total.toLocaleString('id-ID')}</td>
+                    </tr>
+                `).join('');
+            }
+
+            modal.classList.remove('opacity-0', 'pointer-events-none');
+            document.body.classList.add('modal-active');
+        }
+
+        function closeDevPanel() {
+            const modal = document.getElementById('devModal');
+            modal.classList.add('opacity-0', 'pointer-events-none');
+            document.body.classList.remove('modal-active');
+        }
+
+        function clearDevOrders() {
+            if (confirm("Apakah Anda yakin ingin menghapus seluruh data catatan pesanan?")) {
+                localStorage.removeItem('ghirp_orders');
+                openDevPanel();
+            }
+        }
+
+        // Initialize dev status on page load
+        checkDevStatus();
+    </script>
+</body>
+</html>
