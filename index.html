@@ -20,12 +20,15 @@
         /* Header / Navbar */
         header {
             background-color: #1e293b;
-            padding: 20px 8%;
+            padding: 15px 8%;
             display: flex;
             justify-content: space-between;
             align-items: center;
             border-bottom: 2px solid #3b82f6;
             box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+            position: sticky;
+            top: 0;
+            z-index: 100;
         }
 
         .logo {
@@ -39,22 +42,59 @@
             color: #ef4444;
         }
 
+        nav {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+
         nav a {
             color: #cbd5e1;
             text-decoration: none;
-            margin-left: 20px;
             font-weight: 500;
             transition: color 0.3s;
+            cursor: pointer;
         }
 
-        nav a:hover {
+        nav a:hover, nav a.active {
             color: #3b82f6;
+        }
+
+        .cart-btn-wrapper {
+            position: relative;
+            cursor: pointer;
+        }
+
+        .cart-btn {
+            background-color: #3b82f6;
+            color: white;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 6px;
+            font-weight: 600;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            transition: background-color 0.2s;
+        }
+
+        .cart-btn:hover {
+            background-color: #2563eb;
+        }
+
+        .cart-count {
+            background-color: #ef4444;
+            color: white;
+            border-radius: 50%;
+            padding: 2px 7px;
+            font-size: 12px;
         }
 
         /* Hero Banner */
         .hero {
             text-align: center;
-            padding: 60px 20px;
+            padding: 50px 20px;
             background: linear-gradient(180deg, #1e293b 0%, #0f172a 100%);
         }
 
@@ -69,11 +109,11 @@
             font-size: 16px;
         }
 
-        /* Section Title */
+        /* Container Main Content */
         .container {
             max-width: 1200px;
             margin: 0 auto;
-            padding: 40px 20px;
+            padding: 30px 20px;
         }
 
         .section-title {
@@ -108,6 +148,8 @@
             border: 1px solid #334155;
             transition: transform 0.3s, box-shadow 0.3s;
             position: relative;
+            display: flex;
+            flex-direction: column;
         }
 
         .card:hover {
@@ -137,6 +179,9 @@
 
         .card-content {
             padding: 20px;
+            display: flex;
+            flex-direction: column;
+            flex-grow: 1;
         }
 
         .card-title {
@@ -150,6 +195,7 @@
             font-size: 14px;
             margin-bottom: 15px;
             line-height: 1.4;
+            flex-grow: 1;
         }
 
         .stock-info {
@@ -194,6 +240,221 @@
             background-color: #2563eb;
         }
 
+        /* Slide-out Sidebar Keranjang */
+        .cart-sidebar {
+            position: fixed;
+            top: 0;
+            right: -400px;
+            width: 380px;
+            height: 100%;
+            background-color: #1e293b;
+            box-shadow: -5px 0 15px rgba(0,0,0,0.5);
+            transition: right 0.3s ease;
+            z-index: 102;
+            display: flex;
+            flex-direction: column;
+            padding: 20px;
+        }
+
+        .cart-sidebar.open {
+            right: 0;
+        }
+
+        .cart-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid #334155;
+            padding-bottom: 15px;
+        }
+
+        .close-btn {
+            background: none;
+            border: none;
+            color: #94a3b8;
+            font-size: 24px;
+            cursor: pointer;
+        }
+
+        .close-btn:hover {
+            color: white;
+        }
+
+        .cart-items {
+            flex-grow: 1;
+            overflow-y: auto;
+            margin-top: 20px;
+        }
+
+        .cart-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background-color: #0f172a;
+            padding: 12px;
+            border-radius: 8px;
+            margin-bottom: 10px;
+        }
+
+        .cart-item-info h4 {
+            font-size: 14px;
+            color: #f8fafc;
+        }
+
+        .cart-item-info span {
+            font-size: 13px;
+            color: #22c55e;
+            font-weight: bold;
+        }
+
+        .btn-delete {
+            background-color: #ef4444;
+            color: white;
+            border: none;
+            padding: 6px 10px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 12px;
+            transition: background-color 0.2s;
+        }
+
+        .btn-delete:hover {
+            background-color: #dc2626;
+        }
+
+        .cart-footer {
+            border-top: 1px solid #334155;
+            padding-top: 15px;
+        }
+
+        .total-price {
+            display: flex;
+            justify-content: space-between;
+            font-size: 18px;
+            font-weight: bold;
+            margin-bottom: 15px;
+        }
+
+        .btn-checkout {
+            width: 100%;
+            background-color: #22c55e;
+            color: white;
+            border: none;
+            padding: 12px;
+            border-radius: 6px;
+            font-weight: bold;
+            font-size: 16px;
+            cursor: pointer;
+        }
+
+        .btn-checkout:hover {
+            background-color: #16a34a;
+        }
+
+        /* Modal VIP Status */
+        .vip-modal {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%) scale(0.9);
+            width: 90%;
+            max-width: 800px;
+            background-color: #1e293b;
+            border-radius: 12px;
+            border: 1px solid #334155;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.7);
+            z-index: 102;
+            display: none;
+            opacity: 0;
+            transition: all 0.3s ease;
+            padding: 25px;
+        }
+
+        .vip-modal.active {
+            display: block;
+            opacity: 1;
+            transform: translate(-50%, -50%) scale(1);
+        }
+
+        .vip-modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid #334155;
+            padding-bottom: 15px;
+            margin-bottom: 20px;
+        }
+
+        .vip-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 20px;
+        }
+
+        .vip-card {
+            background-color: #0f172a;
+            border-radius: 10px;
+            padding: 20px;
+            border: 1px solid #334155;
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+        .vip-card.gold { border-color: #eab308; }
+        .vip-card.platinum { border-color: #38bdf8; }
+        .vip-card.vip-plus { border-color: #a855f7; }
+
+        .vip-title {
+            font-size: 20px;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+
+        .vip-card.gold .vip-title { color: #eab308; }
+        .vip-card.platinum .vip-title { color: #38bdf8; }
+        .vip-card.vip-plus .vip-title { color: #a855f7; }
+
+        .vip-price {
+            font-size: 22px;
+            font-weight: bold;
+            color: #22c55e;
+            margin: 10px 0;
+        }
+
+        .vip-features {
+            list-style: none;
+            font-size: 13px;
+            color: #cbd5e1;
+            text-align: left;
+            margin-bottom: 15px;
+            line-height: 1.8;
+        }
+
+        .vip-features li::before {
+            content: "✓ ";
+            color: #22c55e;
+            font-weight: bold;
+        }
+
+        /* Overlay Background */
+        .overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.6);
+            display: none;
+            z-index: 101;
+            backdrop-filter: blur(3px);
+        }
+
+        .overlay.active {
+            display: block;
+        }
+
         /* Footer */
         footer {
             background-color: #020617;
@@ -208,24 +469,32 @@
 </head>
 <body>
 
-    <!-- Header -->
+    <!-- Overlay Screen -->
+    <div class="overlay" id="overlay" onclick="closeAllModals()"></div>
+
+    <!-- Header / Navbar -->
     <header>
         <div class="logo">GHIRP <span>STORE</span></div>
         <nav>
             <a href="#">Beranda</a>
             <a href="#">Kendaraan</a>
-            <a href="#">VIP Status</a>
+            <a onclick="openVipModal()" style="color: #eab308; font-weight: bold;">👑 VIP Status</a>
             <a href="#">Bantuan</a>
         </nav>
+        <div class="cart-btn-wrapper" onclick="toggleCart()">
+            <button class="cart-btn">
+                🛒 Keranjang <span class="cart-count" id="cart-count">0</span>
+            </button>
+        </div>
     </header>
 
     <!-- Banner -->
     <section class="hero">
         <h1>Toko Kendaraan Terbatas GHIRP</h1>
-        <p>Dapatkan kendaraan langka dan eksklusif untuk memperkeren karakter Roleplay kamu!</p>
+        <p>Dapatkan kendaraan langka, militer, eksklusif, serta status VIP untuk karakter Roleplay kamu!</p>
     </section>
 
-    <!-- Catalog -->
+    <!-- Catalog Kendaraan -->
     <div class="container">
         <h2 class="section-title">Koleksi Kendaraan Terbatas</h2>
 
@@ -233,7 +502,7 @@
 
             <!-- Card 1: NRG-500 -->
             <div class="card">
-                <span class="card-tag">Limited</span>
+                <span class="card-tag">Limited Motor</span>
                 <img src="https://via.placeholder.com/400x250/1e293b/ffffff?text=NRG-500" alt="NRG-500" class="card-img">
                 <div class="card-content">
                     <h3 class="card-title">NRG-500</h3>
@@ -244,14 +513,14 @@
                     </div>
                     <div class="price-container">
                         <span class="price">Rp 150.000</span>
-                        <button class="btn-buy">Beli Sekarang</button>
+                        <button class="btn-buy" onclick="addToCart('NRG-500', 150000)">+ Keranjang</button>
                     </div>
                 </div>
             </div>
 
             <!-- Card 2: Maverick / Helikopter -->
             <div class="card">
-                <span class="card-tag">Eksklusif</span>
+                <span class="card-tag">Eksklusif Udara</span>
                 <img src="https://via.placeholder.com/400x250/1e293b/ffffff?text=Helikopter+Maverick" alt="Helikopter" class="card-img">
                 <div class="card-content">
                     <h3 class="card-title">Maverick Helicopter</h3>
@@ -262,14 +531,68 @@
                     </div>
                     <div class="price-container">
                         <span class="price">Rp 250.000</span>
-                        <button class="btn-buy">Beli Sekarang</button>
+                        <button class="btn-buy" onclick="addToCart('Maverick Helicopter', 250000)">+ Keranjang</button>
                     </div>
                 </div>
             </div>
 
-            <!-- Card 3: Infernus -->
+            <!-- Card 3: Shamal / Pesawat Jet Private -->
             <div class="card">
-                <span class="card-tag">Rare</span>
+                <span class="card-tag">Super Limited</span>
+                <img src="https://via.placeholder.com/400x250/1e293b/ffffff?text=Pesawat+Shamal" alt="Shamal Jet" class="card-img">
+                <div class="card-content">
+                    <h3 class="card-title">Shamal Jet Plane</h3>
+                    <p class="card-desc">Pesawat jet pribadi mewah kelas bisnis. Cocok untuk penerbangan antar kota dan acara VIP.</p>
+                    <div class="stock-info">
+                        <span>Sisa Stok:</span>
+                        <span class="stock-count">1 Unit</span>
+                    </div>
+                    <div class="price-container">
+                        <span class="price">Rp 500.000</span>
+                        <button class="btn-buy" onclick="addToCart('Shamal Jet Plane', 500000)">+ Keranjang</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Card 4: Rhino Tank / Mobil Tentara -->
+            <div class="card">
+                <span class="card-tag">Militer / Rare</span>
+                <img src="https://via.placeholder.com/400x250/1e293b/ffffff?text=Rhino+Tank" alt="Rhino Tank" class="card-img">
+                <div class="card-content">
+                    <h3 class="card-title">Rhino Tank (Militer)</h3>
+                    <p class="card-desc">Kendaraan tempur lapis baja militer super tangguh dengan pertahanan ekstra kuat.</p>
+                    <div class="stock-info">
+                        <span>Sisa Stok:</span>
+                        <span class="stock-count">1 Unit</span>
+                    </div>
+                    <div class="price-container">
+                        <span class="price">Rp 750.000</span>
+                        <button class="btn-buy" onclick="addToCart('Rhino Tank', 750000)">+ Keranjang</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Card 5: Patriot Military SUV -->
+            <div class="card">
+                <span class="card-tag">Militer</span>
+                <img src="https://via.placeholder.com/400x250/1e293b/ffffff?text=Patriot+Military" alt="Patriot" class="card-img">
+                <div class="card-content">
+                    <h3 class="card-title">Patriot Off-Road Militer</h3>
+                    <p class="card-desc">Mobil Jeep SUV taktis militer handal untuk segala medan berat dan area pegunungan.</p>
+                    <div class="stock-info">
+                        <span>Sisa Stok:</span>
+                        <span class="stock-count">4 Unit</span>
+                    </div>
+                    <div class="price-container">
+                        <span class="price">Rp 200.000</span>
+                        <button class="btn-buy" onclick="addToCart('Patriot Off-Road', 200000)">+ Keranjang</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Card 6: Infernus Sport -->
+            <div class="card">
+                <span class="card-tag">Rare Sport</span>
                 <img src="https://via.placeholder.com/400x250/1e293b/ffffff?text=Infernus" alt="Infernus" class="card-img">
                 <div class="card-content">
                     <h3 class="card-title">Infernus Sport</h3>
@@ -280,29 +603,87 @@
                     </div>
                     <div class="price-container">
                         <span class="price">Rp 175.000</span>
-                        <button class="btn-buy">Beli Sekarang</button>
+                        <button class="btn-buy" onclick="addToCart('Infernus Sport', 175000)">+ Keranjang</button>
                     </div>
                 </div>
             </div>
 
-            <!-- Card 4: Bullet -->
-            <div class="card">
-                <span class="card-tag">Limited</span>
-                <img src="https://via.placeholder.com/400x250/1e293b/ffffff?text=Bullet" alt="Bullet" class="card-img">
-                <div class="card-content">
-                    <h3 class="card-title">Bullet Custom</h3>
-                    <p class="card-desc">Mobil legendaris dengan akselerasi tajam. Pilihan tepat untuk balapan maupun harian.</p>
-                    <div class="stock-info">
-                        <span>Sisa Stok:</span>
-                        <span class="stock-count">1 Unit</span>
-                    </div>
-                    <div class="price-container">
-                        <span class="price">Rp 120.000</span>
-                        <button class="btn-buy">Beli Sekarang</button>
-                    </div>
+        </div>
+    </div>
+
+    <!-- Modal Pop-up VIP Status -->
+    <div class="vip-modal" id="vip-modal">
+        <div class="vip-modal-header">
+            <h2>👑 Paket VIP Status GHIRP</h2>
+            <button class="close-btn" onclick="closeVipModal()">&times;</button>
+        </div>
+        <div class="vip-grid">
+
+            <!-- VIP Gold -->
+            <div class="vip-card gold">
+                <div>
+                    <div class="vip-title">VIP GOLD</div>
+                    <div class="vip-price">Rp 50.000 / bln</div>
+                    <ul class="vip-features">
+                        <li>Slot Kendaraan +2</li>
+                        <li>Gaji Paycheck +25%</li>
+                        <li>Tag Chat [Gold VIP]</li>
+                        <li>Akses Fitur /v color</li>
+                    </ul>
                 </div>
+                <button class="btn-buy" onclick="addToCart('VIP Gold Status', 50000); closeVipModal();">+ Keranjang</button>
             </div>
 
+            <!-- VIP Platinum -->
+            <div class="vip-card platinum">
+                <div>
+                    <div class="vip-title">VIP PLATINUM</div>
+                    <div class="vip-price">Rp 100.000 / bln</div>
+                    <ul class="vip-features">
+                        <li>Slot Kendaraan +4</li>
+                        <li>Gaji Paycheck +50%</li>
+                        <li>Tag Chat [Platinum VIP]</li>
+                        <li>Akses /v spawn instan</li>
+                        <li>Prioritas Antrian Server</li>
+                    </ul>
+                </div>
+                <button class="btn-buy" onclick="addToCart('VIP Platinum Status', 100000); closeVipModal();">+ Keranjang</button>
+            </div>
+
+            <!-- VIP Supreme / Plus -->
+            <div class="vip-card vip-plus">
+                <div>
+                    <div class="vip-title">VIP SUPREME</div>
+                    <div class="vip-price">Rp 200.000 / bln</div>
+                    <ul class="vip-features">
+                        <li>Slot Kendaraan Unlimited</li>
+                        <li>Gaji Paycheck +100%</li>
+                        <li>Tag Chat Custom Color</li>
+                        <li>Akses VIP Garage</li>
+                        <li>Fitur Teleport /v park</li>
+                    </ul>
+                </div>
+                <button class="btn-buy" onclick="addToCart('VIP Supreme Status', 200000); closeVipModal();">+ Keranjang</button>
+            </div>
+
+        </div>
+    </div>
+
+    <!-- Sidebar Keranjang Belanja -->
+    <div class="cart-sidebar" id="cart-sidebar">
+        <div class="cart-header">
+            <h3>Keranjang Belanja</h3>
+            <button class="close-btn" onclick="toggleCart()">&times;</button>
+        </div>
+        <div class="cart-items" id="cart-items">
+            <!-- Item keranjang dirender oleh JavaScript -->
+        </div>
+        <div class="cart-footer">
+            <div class="total-price">
+                <span>Total:</span>
+                <span id="total-price">Rp 0</span>
+            </div>
+            <button class="btn-checkout" onclick="checkout()">Checkout (Admin WA)</button>
         </div>
     </div>
 
@@ -311,5 +692,87 @@
         <p>&copy; 2026 GHIRP (Garuda Horizon Roleplay). All rights reserved.</p>
     </footer>
 
+    <!-- Script JavaScript Fitur Modal VIP & Keranjang Belanja -->
+    <script>
+        let cart = [];
+
+        /* Fungsi Keranjang Belanja */
+        function toggleCart() {
+            closeVipModal();
+            document.getElementById('cart-sidebar').classList.toggle('open');
+            document.getElementById('overlay').classList.toggle('active');
+        }
+
+        function addToCart(name, price) {
+            cart.push({ id: Date.now(), name: name, price: price });
+            updateCartUI();
+        }
+
+        function removeFromCart(id) {
+            cart = cart.filter(item => item.id !== id);
+            updateCartUI();
+        }
+
+        function updateCartUI() {
+            const cartItemsContainer = document.getElementById('cart-items');
+            const cartCount = document.getElementById('cart-count');
+            const totalPrice = document.getElementById('total-price');
+
+            cartCount.innerText = cart.length;
+
+            if (cart.length === 0) {
+                cartItemsContainer.innerHTML = '<p style="color: #94a3b8; text-align: center; margin-top: 20px;">Keranjang masih kosong.</p>';
+                totalPrice.innerText = 'Rp 0';
+                return;
+            }
+
+            let html = '';
+            let total = 0;
+
+            cart.forEach(item => {
+                total += item.price;
+                html += `
+                    <div class="cart-item">
+                        <div class="cart-item-info">
+                            <h4>${item.name}</h4>
+                            <span>Rp ${item.price.toLocaleString('id-ID')}</span>
+                        </div>
+                        <button class="btn-delete" onclick="removeFromCart(${item.id})">Hapus</button>
+                    </div>
+                `;
+            });
+
+            cartItemsContainer.innerHTML = html;
+            totalPrice.innerText = `Rp ${total.toLocaleString('id-ID')}`;
+        }
+
+        /* Fungsi Modal VIP Status */
+        function openVipModal() {
+            document.getElementById('cart-sidebar').classList.remove('open');
+            document.getElementById('vip-modal').classList.add('active');
+            document.getElementById('overlay').classList.add('active');
+        }
+
+        function closeVipModal() {
+            document.getElementById('vip-modal').classList.remove('active');
+        }
+
+        function closeAllModals() {
+            document.getElementById('cart-sidebar').classList.remove('open');
+            document.getElementById('vip-modal').classList.remove('active');
+            document.getElementById('overlay').classList.remove('active');
+        }
+
+        function checkout() {
+            if (cart.length === 0) {
+                alert('Keranjang Anda kosong!');
+                return;
+            }
+            alert('Terima kasih! Pesanan Anda telah dicatat. Silakan hubungi Admin GHIRP untuk konfirmasi.');
+        }
+
+        // Inisialisasi awal
+        updateCartUI();
+    </script>
 </body>
 </html>
