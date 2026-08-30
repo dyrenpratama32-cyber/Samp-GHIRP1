@@ -4,908 +4,314 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>GHIRP Store - Vehicle Limited Shop</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-        }
-
-        body {
-            background-color: #0f172a;
-            color: #f8fafc;
-        }
-
-        /* Header / Navbar */
-        header {
-            background-color: #1e293b;
-            padding: 15px 8%;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            border-bottom: 2px solid #3b82f6;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.3);
-            position: sticky;
-            top: 0;
-            z-index: 100;
-        }
-
-        .logo {
-            font-size: 24px;
-            font-weight: bold;
-            color: #3b82f6;
-            letter-spacing: 1px;
-        }
-
-        .logo span {
-            color: #ef4444;
-        }
-
-        nav {
-            display: flex;
-            align-items: center;
-            gap: 20px;
-        }
-
-        nav a {
-            color: #cbd5e1;
-            text-decoration: none;
-            font-weight: 500;
-            transition: color 0.3s;
-            cursor: pointer;
-        }
-
-        nav a:hover, nav a.active {
-            color: #3b82f6;
-        }
-
-        .cart-btn-wrapper {
-            position: relative;
-            cursor: pointer;
-        }
-
-        .cart-btn {
-            background-color: #3b82f6;
-            color: white;
-            border: none;
-            padding: 8px 16px;
-            border-radius: 6px;
-            font-weight: 600;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            transition: background-color 0.2s;
-        }
-
-        .cart-btn:hover {
-            background-color: #2563eb;
-        }
-
-        .cart-count {
-            background-color: #ef4444;
-            color: white;
-            border-radius: 50%;
-            padding: 2px 7px;
-            font-size: 12px;
-        }
-
-        /* Hero Banner */
-        .hero {
-            text-align: center;
-            padding: 50px 20px;
-            background: linear-gradient(180deg, #1e293b 0%, #0f172a 100%);
-        }
-
-        .hero h1 {
-            font-size: 36px;
-            margin-bottom: 10px;
-            color: #ffffff;
-        }
-
-        .hero p {
-            color: #94a3b8;
-            font-size: 16px;
-        }
-
-        /* Container Main Content */
-        .container {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 30px 20px;
-        }
-
-        .section-title {
-            text-align: center;
-            font-size: 28px;
-            margin-bottom: 30px;
-            position: relative;
-        }
-
-        .section-title::after {
-            content: '';
-            display: block;
-            width: 60px;
-            height: 4px;
-            background-color: #3b82f6;
-            margin: 10px auto 0;
-            border-radius: 2px;
-        }
-
-        /* Grid Kendaraan */
-        .grid-container {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-            gap: 25px;
-        }
-
-        /* Card Kendaraan */
-        .card {
-            background-color: #1e293b;
-            border-radius: 12px;
-            overflow: hidden;
-            border: 1px solid #334155;
-            transition: transform 0.3s, box-shadow 0.3s;
-            position: relative;
-            display: flex;
-            flex-direction: column;
-        }
-
-        .card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 10px 20px rgba(59, 130, 246, 0.2);
-        }
-
-        .card-tag {
-            position: absolute;
-            top: 15px;
-            right: 15px;
-            background-color: #ef4444;
-            color: white;
-            font-size: 12px;
-            padding: 4px 10px;
-            border-radius: 20px;
-            font-weight: bold;
-            text-transform: uppercase;
-        }
-
-        .card-img {
-            width: 100%;
-            height: 180px;
-            object-fit: cover;
-            background-color: #334155;
-        }
-
-        .card-content {
-            padding: 20px;
-            display: flex;
-            flex-direction: column;
-            flex-grow: 1;
-        }
-
-        .card-title {
-            font-size: 20px;
-            margin-bottom: 8px;
-            color: #f8fafc;
-        }
-
-        .card-desc {
-            color: #94a3b8;
-            font-size: 14px;
-            margin-bottom: 15px;
-            line-height: 1.4;
-            flex-grow: 1;
-        }
-
-        .stock-info {
-            display: flex;
-            justify-content: space-between;
-            font-size: 13px;
-            color: #cbd5e1;
-            margin-bottom: 15px;
-            padding-bottom: 10px;
-            border-bottom: 1px solid #334155;
-        }
-
-        .stock-count {
-            color: #eab308;
-            font-weight: bold;
-        }
-
-        .price-container {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-
-        .price {
-            font-size: 18px;
-            font-weight: bold;
-            color: #22c55e;
-        }
-
-        .btn-buy {
-            background-color: #3b82f6;
-            color: white;
-            border: none;
-            padding: 8px 16px;
-            border-radius: 6px;
-            cursor: pointer;
-            font-weight: 600;
-            transition: background-color 0.3s;
-        }
-
-        .btn-buy:hover {
-            background-color: #2563eb;
-        }
-
-        /* Slide-out Sidebar Keranjang */
-        .cart-sidebar {
-            position: fixed;
-            top: 0;
-            right: -400px;
-            width: 380px;
-            height: 100%;
-            background-color: #1e293b;
-            box-shadow: -5px 0 15px rgba(0,0,0,0.5);
-            transition: right 0.3s ease;
-            z-index: 102;
-            display: flex;
-            flex-direction: column;
-            padding: 20px;
-        }
-
-        .cart-sidebar.open {
-            right: 0;
-        }
-
-        .cart-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            border-bottom: 1px solid #334155;
-            padding-bottom: 15px;
-        }
-
-        .close-btn {
-            background: none;
-            border: none;
-            color: #94a3b8;
-            font-size: 24px;
-            cursor: pointer;
-            line-height: 1;
-        }
-
-        .close-btn:hover {
-            color: white;
-        }
-
-        .cart-items {
-            flex-grow: 1;
-            overflow-y: auto;
-            margin-top: 20px;
-        }
-
-        .cart-item {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            background-color: #0f172a;
-            padding: 12px;
-            border-radius: 8px;
-            margin-bottom: 10px;
-        }
-
-        .cart-item-info h4 {
-            font-size: 14px;
-            color: #f8fafc;
-        }
-
-        .cart-item-info span {
-            font-size: 13px;
-            color: #22c55e;
-            font-weight: bold;
-        }
-
-        .btn-delete {
-            background-color: #ef4444;
-            color: white;
-            border: none;
-            padding: 6px 10px;
-            border-radius: 4px;
-            cursor: pointer;
-            font-size: 12px;
-            transition: background-color 0.2s;
-        }
-
-        .btn-delete:hover {
-            background-color: #dc2626;
-        }
-
-        .cart-footer {
-            border-top: 1px solid #334155;
-            padding-top: 15px;
-        }
-
-        .total-price {
-            display: flex;
-            justify-content: space-between;
-            font-size: 18px;
-            font-weight: bold;
-            margin-bottom: 15px;
-        }
-
-        .btn-checkout {
-            width: 100%;
-            background-color: #22c55e;
-            color: white;
-            border: none;
-            padding: 12px;
-            border-radius: 6px;
-            font-weight: bold;
-            font-size: 16px;
-            cursor: pointer;
-        }
-
-        .btn-checkout:hover {
-            background-color: #16a34a;
-        }
-
-        /* Modal VIP Status Compact */
-        .vip-modal {
-            position: fixed;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%) scale(0.9);
-            width: 90%;
-            max-width: 650px;
-            max-height: 85vh;
-            background-color: #1e293b;
-            border-radius: 12px;
-            border: 1px solid #334155;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.7);
-            z-index: 102;
-            display: none;
-            opacity: 0;
-            transition: all 0.3s ease;
-            padding: 20px;
-            overflow-y: auto;
-        }
-
-        .vip-modal.active {
-            display: block;
-            opacity: 1;
-            transform: translate(-50%, -50%) scale(1);
-        }
-
-        .vip-modal-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            border-bottom: 1px solid #334155;
-            padding-bottom: 10px;
-            margin-bottom: 15px;
-        }
-
-        .vip-modal-header h2 {
-            font-size: 20px;
-        }
-
-        .vip-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
-            gap: 15px;
-        }
-
-        .vip-card {
-            background-color: #0f172a;
-            border-radius: 8px;
-            padding: 15px;
-            border: 1px solid #334155;
-            text-align: center;
-            display: flex;
-            flex-direction: column;
-            justify-content: space-between;
-        }
-
-        .vip-card.gold { border-color: #eab308; }
-        .vip-card.platinum { border-color: #38bdf8; }
-        .vip-card.vip-plus { border-color: #a855f7; }
-
-        .vip-title {
-            font-size: 16px;
-            font-weight: bold;
-            margin-bottom: 5px;
-        }
-
-        .vip-card.gold .vip-title { color: #eab308; }
-        .vip-card.platinum .vip-title { color: #38bdf8; }
-        .vip-card.vip-plus .vip-title { color: #a855f7; }
-
-        .vip-price {
-            font-size: 16px;
-            font-weight: bold;
-            color: #22c55e;
-            margin: 6px 0 10px;
-        }
-
-        .vip-features {
-            list-style: none;
-            font-size: 12px;
-            color: #cbd5e1;
-            text-align: left;
-            margin-bottom: 15px;
-            line-height: 1.6;
-        }
-
-        .vip-features li::before {
-            content: "✓ ";
-            color: #22c55e;
-            font-weight: bold;
-        }
-
-        .vip-footer-close {
-            margin-top: 15px;
-            text-align: right;
-            border-top: 1px solid #334155;
-            padding-top: 10px;
-        }
-
-        .btn-close-modal {
-            background-color: #475569;
-            color: white;
-            border: none;
-            padding: 6px 14px;
-            border-radius: 5px;
-            cursor: pointer;
-            font-size: 13px;
-        }
-
-        .btn-close-modal:hover {
-            background-color: #64748b;
-        }
-
-        /* Modal Developer Orders */
-        .dev-modal {
-            position: fixed;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%) scale(0.9);
-            width: 95%;
-            max-width: 800px;
-            max-height: 85vh;
-            background-color: #1e293b;
-            border-radius: 12px;
-            border: 1px solid #eab308;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.8);
-            z-index: 103;
-            display: none;
-            opacity: 0;
-            transition: all 0.3s ease;
-            padding: 20px;
-            overflow-y: auto;
-        }
-
-        .dev-modal.active {
-            display: block;
-            opacity: 1;
-            transform: translate(-50%, -50%) scale(1);
-        }
-
-        .dev-table {
-            width: 100%;
-            border-collapse: collapse;
-            margin-top: 15px;
-            font-size: 14px;
-        }
-
-        .dev-table th, .dev-table td {
-            border: 1px solid #334155;
-            padding: 10px;
-            text-align: left;
-        }
-
-        .dev-table th {
-            background-color: #0f172a;
-            color: #eab308;
-        }
-
-        .btn-clear-dev {
-            background-color: #ef4444;
-            color: white;
-            border: none;
-            padding: 6px 12px;
-            border-radius: 4px;
-            cursor: pointer;
-            font-size: 12px;
-        }
-
-        /* Overlay Background */
-        .overlay {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0, 0, 0, 0.6);
-            display: none;
-            z-index: 101;
-            backdrop-filter: blur(3px);
-        }
-
-        .overlay.active {
-            display: block;
-        }
-
-        /* Footer */
-        footer {
-            background-color: #020617;
-            text-align: center;
-            padding: 20px;
-            color: #64748b;
-            font-size: 14px;
-            margin-top: 40px;
-            border-top: 1px solid #1e293b;
+        .modal {
+            transition: opacity 0.25s ease;
+        }
+        body.modal-active {
+            overflow-x: hidden;
+            overflow-y: hidden;
         }
     </style>
 </head>
-<body>
+<body class="bg-slate-900 text-slate-100 font-sans min-h-screen flex flex-col justify-between">
 
-    <!-- Overlay Screen -->
-    <div class="overlay" id="overlay" onclick="closeAllModals()"></div>
+    <!-- NAVBAR -->
+    <nav class="bg-slate-800 border-b border-slate-700 sticky top-0 z-40 shadow-lg">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-between h-16">
+                <div class="flex items-center space-x-3">
+                    <span class="text-2xl font-black tracking-wider text-blue-500">GHIRP <span class="text-red-500">STORE</span></span>
+                </div>
+                <div class="hidden md:flex items-center space-x-6 font-medium text-sm">
+                    <a href="#" class="text-white hover:text-blue-400 transition">Beranda</a>
+                    <a href="#vehicles" class="text-slate-300 hover:text-blue-400 transition">Kendaraan</a>
+                    <a href="#" onclick="alert('Fitur VIP Status segera hadir!')" class="text-amber-400 hover:text-amber-300 transition"><i class="fa-solid font-bold fa-crown mr-1"></i> VIP Status</a>
+                    <a href="#" id="devPanelNav" onclick="openDevPanel()" class="hidden text-red-400 hover:text-red-300 transition"><i class="fa-solid fa-gear mr-1"></i> Dev Panel</a>
+                    <a href="#" onclick="alert('Hubungi Admin di Discord GHIRP untuk bantuan!')" class="text-slate-300 hover:text-blue-400 transition">Bantuan</a>
+                </div>
+                <div>
+                    <button onclick="toggleCartModal()" class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-lg flex items-center shadow-md transition">
+                        <i class="fa-solid fa-cart-shopping mr-2"></i> Keranjang 
+                        <span id="cartCount" class="ml-2 bg-red-500 text-white text-xs px-2 py-0.5 rounded-full">0</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </nav>
 
-    <!-- Header / Navbar -->
-    <header>
-        <div class="logo">GHIRP <span>STORE</span></div>
-        <nav>
-            <a href="#">Beranda</a>
-            <a href="#">Kendaraan</a>
-            <a onclick="openVipModal()" style="color: #eab308; font-weight: bold;">👑 VIP Status</a>
-            <!-- Menu Developer (Default Disembunyikan) -->
-            <a id="dev-menu-btn" onclick="openDevModal()" style="display: none; color: #ef4444; font-weight: bold;">⚙️ Dev Panel</a>
-            <a href="#">Bantuan</a>
-        </nav>
-        <div class="cart-btn-wrapper" onclick="toggleCart()">
-            <button class="cart-btn">
-                🛒 Keranjang <span class="cart-count" id="cart-count">0</span>
-            </button>
+    <!-- HERO SECTION -->
+    <header class="bg-gradient-to-b from-slate-800 to-slate-900 py-12 border-b border-slate-800 text-center">
+        <div class="max-w-4xl mx-auto px-4">
+            <h1 class="text-4xl md:text-5xl font-extrabold text-white tracking-tight mb-4">Toko Kendaraan Terbatas GHIRP</h1>
+            <p class="text-slate-400 text-lg">Dapatkan kendaraan langka, militer, eksklusif, serta status VIP untuk karakter Roleplay kamu!</p>
         </div>
     </header>
 
-    <!-- Banner -->
-    <section class="hero">
-        <h1>Toko Kendaraan Terbatas GHIRP</h1>
-        <p>Dapatkan kendaraan langka, militer, eksklusif, serta status VIP untuk karakter Roleplay kamu!</p>
-    </section>
-
-    <!-- Catalog Kendaraan -->
-    <div class="container">
-        <h2 class="section-title">Koleksi Kendaraan Terbatas</h2>
-
-        <div class="grid-container">
-
-            <!-- Card 1: NRG-500 -->
-            <div class="card">
-                <span class="card-tag">Limited Motor</span>
-                <img src="https://via.placeholder.com/400x250/1e293b/ffffff?text=NRG-500" alt="NRG-500" class="card-img">
-                <div class="card-content">
-                    <h3 class="card-title">NRG-500</h3>
-                    <p class="card-desc">Motor sport tercepat di San Andreas. Cocok untuk Anda yang menyukai kecepatan tinggi dan kelincahan.</p>
-                    <div class="stock-info">
-                        <span>Sisa Stok:</span>
-                        <span class="stock-count">3 Unit</span>
+    <!-- MAIN CONTENT / CATALOG -->
+    <main id="vehicles" class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 flex-grow">
+        <h2 class="text-2xl font-bold text-white mb-6 border-l-4 border-blue-500 pl-3">Koleksi Kendaraan Terbatas</h2>
+        
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6" id="productGrid">
+            <!-- Product Item 1 -->
+            <div class="bg-slate-800 border border-slate-700 rounded-xl overflow-hidden shadow-lg flex flex-col justify-between">
+                <div class="relative">
+                    <img src="https://images.unsplash.com/photo-1558981806-ec527fa84c39?auto=format&fit=crop&w=600&q=80" alt="NRG-500" class="w-full h-48 object-cover">
+                    <span class="absolute top-2 right-2 bg-red-600 text-white text-xs font-bold px-2.5 py-1 rounded">LIMITED MOTOR</span>
+                </div>
+                <div class="p-5 flex-grow flex flex-col justify-between">
+                    <div>
+                        <h3 class="text-xl font-bold text-white">NRG-500</h3>
+                        <p class="text-slate-400 text-sm mt-2">Motor sport tercepat di San Andreas. Cocok untuk Anda yang menyukai kecepatan tinggi dan kelincahan.</p>
                     </div>
-                    <div class="price-container">
-                        <span class="price">Rp 150.000</span>
-                        <button class="btn-buy" onclick="addToCart('NRG-500', 150000)">+ Keranjang</button>
+                    <div class="mt-6 flex items-center justify-between border-t border-slate-700 pt-4">
+                        <div>
+                            <span class="block text-xs text-slate-400">Sisa Stok: <strong class="text-emerald-400">3 Unit</strong></span>
+                            <span class="text-lg font-bold text-blue-400">Rp 150.000</span>
+                        </div>
+                        <button onclick="addToCart('NRG-500', 150000)" class="bg-blue-600 hover:bg-blue-700 text-white text-sm font-semibold py-2 px-3 rounded-lg transition">
+                            + Keranjang
+                        </button>
                     </div>
                 </div>
             </div>
 
-            <!-- Card 2: Maverick / Helikopter -->
-            <div class="card">
-                <span class="card-tag">Eksklusif Udara</span>
-                <img src="https://via.placeholder.com/400x250/1e293b/ffffff?text=Helikopter+Maverick" alt="Helikopter" class="card-img">
-                <div class="card-content">
-                    <h3 class="card-title">Maverick Helicopter</h3>
-                    <p class="card-desc">Jelajahi langit San Andreas tanpa hambatan. Kendaraan udara mewah untuk mobilitas tinggi.</p>
-                    <div class="stock-info">
-                        <span>Sisa Stok:</span>
-                        <span class="stock-count">2 Unit</span>
+            <!-- Product Item 2 -->
+            <div class="bg-slate-800 border border-slate-700 rounded-xl overflow-hidden shadow-lg flex flex-col justify-between">
+                <div class="relative">
+                    <img src="https://images.unsplash.com/photo-1508614589041-895b88991e3e?auto=format&fit=crop&w=600&q=80" alt="Maverick" class="w-full h-48 object-cover">
+                    <span class="absolute top-2 right-2 bg-amber-500 text-slate-900 text-xs font-bold px-2.5 py-1 rounded">EKSKLUSIF UDARA</span>
+                </div>
+                <div class="p-5 flex-grow flex flex-col justify-between">
+                    <div>
+                        <h3 class="text-xl font-bold text-white">Maverick Helicopter</h3>
+                        <p class="text-slate-400 text-sm mt-2">Jelajahi langit San Andreas tanpa hambatan. Kendaraan udara mewah untuk mobilitas tinggi.</p>
                     </div>
-                    <div class="price-container">
-                        <span class="price">Rp 250.000</span>
-                        <button class="btn-buy" onclick="addToCart('Maverick Helicopter', 250000)">+ Keranjang</button>
+                    <div class="mt-6 flex items-center justify-between border-t border-slate-700 pt-4">
+                        <div>
+                            <span class="block text-xs text-slate-400">Sisa Stok: <strong class="text-emerald-400">2 Unit</strong></span>
+                            <span class="text-lg font-bold text-blue-400">Rp 250.000</span>
+                        </div>
+                        <button onclick="addToCart('Maverick Helicopter', 250000)" class="bg-blue-600 hover:bg-blue-700 text-white text-sm font-semibold py-2 px-3 rounded-lg transition">
+                            + Keranjang
+                        </button>
                     </div>
                 </div>
             </div>
 
-            <!-- Card 3: Shamal / Pesawat Jet Private -->
-            <div class="card">
-                <span class="card-tag">Super Limited</span>
-                <img src="https://via.placeholder.com/400x250/1e293b/ffffff?text=Pesawat+Shamal" alt="Shamal Jet" class="card-img">
-                <div class="card-content">
-                    <h3 class="card-title">Shamal Jet Plane</h3>
-                    <p class="card-desc">Pesawat jet pribadi mewah kelas bisnis. Cocok untuk penerbangan antar kota dan acara VIP.</p>
-                    <div class="stock-info">
-                        <span>Sisa Stok:</span>
-                        <span class="stock-count">1 Unit</span>
+            <!-- Product Item 3 -->
+            <div class="bg-slate-800 border border-slate-700 rounded-xl overflow-hidden shadow-lg flex flex-col justify-between">
+                <div class="relative">
+                    <img src="https://images.unsplash.com/photo-1540959733332-eab4deabeeaf?auto=format&fit=crop&w=600&q=80" alt="Shamal Jet" class="w-full h-48 object-cover">
+                    <span class="absolute top-2 right-2 bg-purple-600 text-white text-xs font-bold px-2.5 py-1 rounded">SUPER LIMITED</span>
+                </div>
+                <div class="p-5 flex-grow flex flex-col justify-between">
+                    <div>
+                        <h3 class="text-xl font-bold text-white">Shamal Jet Plane</h3>
+                        <p class="text-slate-400 text-sm mt-2">Pesawat jet pribadi mewah kelas bisnis. Cocok untuk penerbangan antar kota dan acara VIP.</p>
                     </div>
-                    <div class="price-container">
-                        <span class="price">Rp 500.000</span>
-                        <button class="btn-buy" onclick="addToCart('Shamal Jet Plane', 500000)">+ Keranjang</button>
+                    <div class="mt-6 flex items-center justify-between border-t border-slate-700 pt-4">
+                        <div>
+                            <span class="block text-xs text-slate-400">Sisa Stok: <strong class="text-amber-400">1 Unit</strong></span>
+                            <span class="text-lg font-bold text-blue-400">Rp 500.000</span>
+                        </div>
+                        <button onclick="addToCart('Shamal Jet Plane', 500000)" class="bg-blue-600 hover:bg-blue-700 text-white text-sm font-semibold py-2 px-3 rounded-lg transition">
+                            + Keranjang
+                        </button>
                     </div>
                 </div>
             </div>
 
-            <!-- Card 4: Rhino Tank / Mobil Tentara -->
-            <div class="card">
-                <span class="card-tag">Militer / Rare</span>
-                <img src="https://via.placeholder.com/400x250/1e293b/ffffff?text=Rhino+Tank" alt="Rhino Tank" class="card-img">
-                <div class="card-content">
-                    <h3 class="card-title">Rhino Tank (Militer)</h3>
-                    <p class="card-desc">Kendaraan tempur lapis baja militer super tangguh dengan pertahanan ekstra kuat.</p>
-                    <div class="stock-info">
-                        <span>Sisa Stok:</span>
-                        <span class="stock-count">1 Unit</span>
+            <!-- Product Item 4 -->
+            <div class="bg-slate-800 border border-slate-700 rounded-xl overflow-hidden shadow-lg flex flex-col justify-between">
+                <div class="relative">
+                    <img src="https://images.unsplash.com/photo-1563720223185-11003d516935?auto=format&fit=crop&w=600&q=80" alt="Rhino Tank" class="w-full h-48 object-cover">
+                    <span class="absolute top-2 right-2 bg-emerald-600 text-white text-xs font-bold px-2.5 py-1 rounded">MILITER / RARE</span>
+                </div>
+                <div class="p-5 flex-grow flex flex-col justify-between">
+                    <div>
+                        <h3 class="text-xl font-bold text-white">Rhino Tank (Militer)</h3>
+                        <p class="text-slate-400 text-sm mt-2">Kendaraan tempur lapis baja militer super tangguh dengan pertahanan ekstra kuat.</p>
                     </div>
-                    <div class="price-container">
-                        <span class="price">Rp 750.000</span>
-                        <button class="btn-buy" onclick="addToCart('Rhino Tank', 750000)">+ Keranjang</button>
+                    <div class="mt-6 flex items-center justify-between border-t border-slate-700 pt-4">
+                        <div>
+                            <span class="block text-xs text-slate-400">Sisa Stok: <strong class="text-amber-400">1 Unit</strong></span>
+                            <span class="text-lg font-bold text-blue-400">Rp 750.000</span>
+                        </div>
+                        <button onclick="addToCart('Rhino Tank (Militer)', 750000)" class="bg-blue-600 hover:bg-blue-700 text-white text-sm font-semibold py-2 px-3 rounded-lg transition">
+                            + Keranjang
+                        </button>
                     </div>
                 </div>
             </div>
 
-            <!-- Card 5: Patriot Military SUV -->
-            <div class="card">
-                <span class="card-tag">Militer</span>
-                <img src="https://via.placeholder.com/400x250/1e293b/ffffff?text=Patriot+Military" alt="Patriot" class="card-img">
-                <div class="card-content">
-                    <h3 class="card-title">Patriot Off-Road Militer</h3>
-                    <p class="card-desc">Mobil Jeep SUV taktis militer handal untuk segala medan berat dan area pegunungan.</p>
-                    <div class="stock-info">
-                        <span>Sisa Stok:</span>
-                        <span class="stock-count">4 Unit</span>
+            <!-- Product Item 5 -->
+            <div class="bg-slate-800 border border-slate-700 rounded-xl overflow-hidden shadow-lg flex flex-col justify-between">
+                <div class="relative">
+                    <img src="https://images.unsplash.com/photo-1533473359331-0135ef1b58bf?auto=format&fit=crop&w=600&q=80" alt="Patriot" class="w-full h-48 object-cover">
+                    <span class="absolute top-2 right-2 bg-emerald-600 text-white text-xs font-bold px-2.5 py-1 rounded">MILITER</span>
+                </div>
+                <div class="p-5 flex-grow flex flex-col justify-between">
+                    <div>
+                        <h3 class="text-xl font-bold text-white">Patriot Off-Road Militer</h3>
+                        <p class="text-slate-400 text-sm mt-2">Mobil Jeep SUV taktis militer handal untuk segala medan berat dan area pegunungan.</p>
                     </div>
-                    <div class="price-container">
-                        <span class="price">Rp 200.000</span>
-                        <button class="btn-buy" onclick="addToCart('Patriot Off-Road', 200000)">+ Keranjang</button>
+                    <div class="mt-6 flex items-center justify-between border-t border-slate-700 pt-4">
+                        <div>
+                            <span class="block text-xs text-slate-400">Sisa Stok: <strong class="text-emerald-400">4 Unit</strong></span>
+                            <span class="text-lg font-bold text-blue-400">Rp 200.000</span>
+                        </div>
+                        <button onclick="addToCart('Patriot Off-Road', 200000)" class="bg-blue-600 hover:bg-blue-700 text-white text-sm font-semibold py-2 px-3 rounded-lg transition">
+                            + Keranjang
+                        </button>
                     </div>
                 </div>
             </div>
 
-            <!-- Card 6: Infernus Sport -->
-            <div class="card">
-                <span class="card-tag">Rare Sport</span>
-                <img src="https://via.placeholder.com/400x250/1e293b/ffffff?text=Infernus" alt="Infernus" class="card-img">
-                <div class="card-content">
-                    <h3 class="card-title">Infernus Sport</h3>
-                    <p class="card-desc">Supercar kelas atas dengan desain aerodinamis dan performa mesin maksimal di jalanan kota.</p>
-                    <div class="stock-info">
-                        <span>Sisa Stok:</span>
-                        <span class="stock-count">5 Unit</span>
+            <!-- Product Item 6 -->
+            <div class="bg-slate-800 border border-slate-700 rounded-xl overflow-hidden shadow-lg flex flex-col justify-between">
+                <div class="relative">
+                    <img src="https://images.unsplash.com/photo-1617814076367-b759c7d7e738?auto=format&fit=crop&w=600&q=80" alt="Infernus" class="w-full h-48 object-cover">
+                    <span class="absolute top-2 right-2 bg-blue-600 text-white text-xs font-bold px-2.5 py-1 rounded">RARE SPORT</span>
+                </div>
+                <div class="p-5 flex-grow flex flex-col justify-between">
+                    <div>
+                        <h3 class="text-xl font-bold text-white">Infernus Sport</h3>
+                        <p class="text-slate-400 text-sm mt-2">Supercar kelas atas dengan desain aerodinamis dan performa mesin maksimal di jalanan kota.</p>
                     </div>
-                    <div class="price-container">
-                        <span class="price">Rp 175.000</span>
-                        <button class="btn-buy" onclick="addToCart('Infernus Sport', 175000)">+ Keranjang</button>
+                    <div class="mt-6 flex items-center justify-between border-t border-slate-700 pt-4">
+                        <div>
+                            <span class="block text-xs text-slate-400">Sisa Stok: <strong class="text-emerald-400">5 Unit</strong></span>
+                            <span class="text-lg font-bold text-blue-400">Rp 175.000</span>
+                        </div>
+                        <button onclick="addToCart('Infernus Sport', 175000)" class="bg-blue-600 hover:bg-blue-700 text-white text-sm font-semibold py-2 px-3 rounded-lg transition">
+                            + Keranjang
+                        </button>
                     </div>
                 </div>
             </div>
+        </div>
+    </main>
 
+    <!-- MODAL SAMBUTAN (WELCOME MODAL) -->
+    <div id="welcomeModal" class="modal fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-sm">
+        <div class="bg-slate-800 border border-slate-700 rounded-2xl max-w-lg w-full p-6 shadow-2xl transform transition-all">
+            <div class="text-center">
+                <div class="w-16 h-16 bg-blue-600/20 text-blue-500 rounded-full flex items-center justify-center mx-auto mb-4 border border-blue-500/30">
+                    <i class="fa-solid fa-city text-3xl"></i>
+                </div>
+                <h2 class="text-2xl font-black text-white uppercase tracking-wide">
+                    Garuda Horizon Roleplay <br><span class="text-blue-500 text-lg">(GHIRP)</span>
+                </h2>
+                <div class="w-12 h-1 bg-red-500 mx-auto my-3 rounded-full"></div>
+            </div>
+            
+            <div class="text-slate-300 text-sm space-y-3 mt-4 text-center leading-relaxed">
+                <p>🇮🇩 <strong>Selamat Datang Warga Baru!</strong></p>
+                <p>Selamat bergabung di Kota <strong>Garuda Indonesia Roleplay</strong>. Siapkan alur cerita (*storyline*) karaktermu, patuhi aturan kota, dan mulailah membangun karir serta kehidupan impianmu di San Andreas!</p>
+                <div class="bg-slate-900/60 p-3 rounded-lg border border-slate-700/50 text-xs text-left text-slate-400 space-y-1">
+                    <p><i class="fa-solid fa-circle-info text-blue-400 mr-1"></i> Gunakan toko ini untuk memesan Kendaraan Limited & Status VIP.</p>
+                    <p><i class="fa-solid fa-shield-halved text-emerald-400 mr-1"></i> Selalu junjung tinggi kejujuran & kualitas Roleplay.</p>
+                </div>
+            </div>
+
+            <div class="mt-6 flex flex-col sm:flex-row gap-3">
+                <button onclick="closeWelcomeModal()" class="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-2.5 px-4 rounded-xl shadow-lg transition text-sm">
+                    🚀 Masuk ke Toko / Kota
+                </button>
+            </div>
         </div>
     </div>
 
-    <!-- Modal Pop-up VIP Status -->
-    <div class="vip-modal" id="vip-modal">
-        <div class="vip-modal-header">
-            <h2>👑 Paket VIP Status GHIRP</h2>
-            <button class="close-btn" onclick="closeVipModal()">&times;</button>
-        </div>
-        <div class="vip-grid">
-            <div class="vip-card gold">
+    <!-- MODAL KERANJANG -->
+    <div id="cartModal" class="modal opacity-0 pointer-events-none fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/75">
+        <div class="bg-slate-800 border border-slate-700 rounded-xl max-w-md w-full p-6 shadow-xl">
+            <div class="flex justify-between items-center mb-4 pb-2 border-b border-slate-700">
+                <h3 class="text-lg font-bold text-white"><i class="fa-solid fa-cart-shopping mr-2 text-blue-400"></i> Keranjang Belanja</h3>
+                <button onclick="toggleCartModal()" class="text-slate-400 hover:text-white text-xl">&times;</button>
+            </div>
+            
+            <div id="cartItems" class="max-h-60 overflow-y-auto space-y-3 mb-4 pr-1">
+                <p class="text-slate-400 text-sm text-center py-4">Keranjang masih kosong.</p>
+            </div>
+
+            <div id="checkoutForm" class="hidden border-t border-slate-700 pt-4 space-y-3">
                 <div>
-                    <div class="vip-title">VIP GOLD</div>
-                    <div class="vip-price">Rp 50.000 / bln</div>
-                    <ul class="vip-features">
-                        <li>Slot Kendaraan +2</li>
-                        <li>Gaji Paycheck +25%</li>
-                        <li>Tag Chat [Gold VIP]</li>
-                        <li>Akses Fitur /v color</li>
-                    </ul>
+                    <label class="block text-xs font-semibold text-slate-300 mb-1">Nama IC / Character SA-MP *</label>
+                    <input type="text" id="icNameInput" placeholder="Contoh: Budi_Santoso" class="w-full bg-slate-900 border border-slate-700 rounded px-3 py-2 text-sm text-white focus:outline-none focus:border-blue-500">
                 </div>
-                <button class="btn-buy" onclick="addToCart('VIP Gold Status', 50000); closeVipModal();">+ Keranjang</button>
             </div>
-            <div class="vip-card platinum">
+
+            <div class="border-t border-slate-700 pt-4 mt-4 flex items-center justify-between">
                 <div>
-                    <div class="vip-title">VIP PLATINUM</div>
-                    <div class="vip-price">Rp 100.000 / bln</div>
-                    <ul class="vip-features">
-                        <li>Slot Kendaraan +4</li>
-                        <li>Gaji Paycheck +50%</li>
-                        <li>Tag Chat [Platinum VIP]</li>
-                        <li>Akses /v spawn instan</li>
-                        <li>Prioritas Antrian Server</li>
-                    </ul>
+                    <span class="text-xs text-slate-400 block">Total:</span>
+                    <span id="cartTotal" class="text-xl font-bold text-emerald-400">Rp 0</span>
                 </div>
-                <button class="btn-buy" onclick="addToCart('VIP Platinum Status', 100000); closeVipModal();">+ Keranjang</button>
+                <button onclick="processCheckout()" class="bg-emerald-600 hover:bg-emerald-700 text-white font-bold py-2 px-5 rounded-lg transition text-sm">
+                    Checkout
+                </button>
             </div>
-            <div class="vip-card vip-plus">
-                <div>
-                    <div class="vip-title">VIP SUPREME</div>
-                    <div class="vip-price">Rp 200.000 / bln</div>
-                    <ul class="vip-features">
-                        <li>Slot Kendaraan Unlimited</li>
-                        <li>Gaji Paycheck +100%</li>
-                        <li>Tag Chat Custom Color</li>
-                        <li>Akses VIP Garage</li>
-                        <li>Fitur Teleport /v park</li>
-                    </ul>
-                </div>
-                <button class="btn-buy" onclick="addToCart('VIP Supreme Status', 200000); closeVipModal();">+ Keranjang</button>
-            </div>
-        </div>
-        <div class="vip-footer-close">
-            <button class="btn-close-modal" onclick="closeVipModal()">Batal / Tutup</button>
         </div>
     </div>
 
-    <!-- Modal Developer Panel (Daftar Pesanan) -->
-    <div class="dev-modal" id="dev-modal">
-        <div class="vip-modal-header">
-            <h2>⚙️ Developer Panel - Data Pesanan</h2>
-            <button class="close-btn" onclick="closeDevModal()">&times;</button>
-        </div>
-        <div style="display: flex; justify-content: space-between; align-items: center;">
-            <p style="font-size: 13px; color: #94a3b8;">Berikut daftar pemesan dari hasil checkout pengguna:</p>
-            <button class="btn-clear-dev" onclick="clearOrders()">Hapus Semua Pesanan</button>
-        </div>
-        <table class="dev-table">
-            <thead>
-                <tr>
-                    <th>Waktu</th>
-                    <th>Nama IC / Player</th>
-                    <th>Item Dipesan</th>
-                    <th>Total Pembayaran</th>
-                </tr>
-            </thead>
-            <tbody id="dev-orders-body">
-                <!-- Data Pesanan Dirender oleh JS -->
-            </tbody>
-        </table>
-        <div class="vip-footer-close">
-            <button class="btn-close-modal" onclick="closeDevModal()">Tutup Panel</button>
-        </div>
-    </div>
-
-    <!-- Sidebar Keranjang Belanja -->
-    <div class="cart-sidebar" id="cart-sidebar">
-        <div class="cart-header">
-            <h3>Keranjang Belanja</h3>
-            <button class="close-btn" onclick="toggleCart()">&times;</button>
-        </div>
-        <div class="cart-items" id="cart-items"></div>
-        <div class="cart-footer">
-            <div class="total-price">
-                <span>Total:</span>
-                <span id="total-price">Rp 0</span>
+    <!-- MODAL DEV PANEL -->
+    <div id="devModal" class="modal opacity-0 pointer-events-none fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80">
+        <div class="bg-slate-800 border border-red-500/40 rounded-xl max-w-2xl w-full p-6 shadow-2xl">
+            <div class="flex justify-between items-center mb-4 pb-2 border-b border-slate-700">
+                <h3 class="text-lg font-bold text-red-400"><i class="fa-solid fa-code mr-2"></i> Developer Panel - Data Pesanan</h3>
+                <button onclick="closeDevPanel()" class="text-slate-400 hover:text-white text-xl">&times;</button>
             </div>
-            <button class="btn-checkout" onclick="checkout()">Checkout (Lanjut ke Order)</button>
+
+            <div class="overflow-x-auto max-h-80">
+                <table class="w-full text-left text-sm text-slate-300">
+                    <thead class="bg-slate-900 text-slate-400 uppercase text-xs">
+                        <tr>
+                            <th class="p-3">Waktu</th>
+                            <th class="p-3">Nama IC</th>
+                            <th class="p-3">Item Dipesan</th>
+                            <th class="p-3">Total</th>
+                        </tr>
+                    </thead>
+                    <tbody id="devOrderTableBody" class="divide-y divide-slate-700">
+                        <!-- Populated by JS -->
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="mt-4 pt-3 border-t border-slate-700 flex justify-between">
+                <button onclick="clearDevOrders()" class="bg-red-600/20 text-red-400 hover:bg-red-600 hover:text-white text-xs font-semibold px-3 py-2 rounded transition">
+                    Hapus Semua Record Data
+                </button>
+                <button onclick="closeDevPanel()" class="bg-slate-700 hover:bg-slate-600 text-white text-xs font-semibold px-4 py-2 rounded transition">
+                    Tutup
+                </button>
+            </div>
         </div>
     </div>
 
-    <!-- Footer -->
-    <footer>
+    <!-- FOOTER -->
+    <footer class="bg-slate-950 border-t border-slate-800 py-6 text-center text-xs text-slate-500">
         <p>&copy; 2026 GHIRP (Garuda Horizon Roleplay). All rights reserved.</p>
     </footer>
 
-    <!-- Script JavaScript -->
+    <!-- JAVASCRIPT LOGIC -->
     <script>
         let cart = [];
-        const DEV_PASS = "admin123"; // Password Rahasia Developer
 
-        /* 1. Fungsi Keranjang */
-        function toggleCart() {
-            closeVipModal();
-            closeDevModal();
-            document.getElementById('cart-sidebar').classList.toggle('open');
-            document.getElementById('overlay').classList.toggle('active');
-        }
-
-        function addToCart(name, price) {
-            cart.push({ id: Date.now(), name: name, price: price });
-            updateCartUI();
-        }
-
-        function removeFromCart(id) {
-            cart = cart.filter(item => item.id !== id);
-            updateCartUI();
-        }
-
-        function updateCartUI() {
-            const cartItemsContainer = document.getElementById('cart-items');
-            const cartCount = document.getElementById('cart-count');
-            const totalPrice = document.getElementById('total-price');
-
-            cartCount.innerText = cart.length;
-
-            if (cart.length === 0) {
-                cartItemsContainer.innerHTML = '<p style="color: #94a3b8; text-align: center; margin-top: 20px;">Keranjang masih kosong.</p>';
-                totalPrice.innerText = 'Rp 0';
-                return;
-            }
-
-            let html = '';
-            let total = 0;
-
-            cart.forEach(item => {
-                total += item.price;
-                html += `
-                    <div class="cart-item">
-                        <div class="cart-item-info">
-                            <h4>${item.name}</h4>
-                            <span>Rp ${item.price.toLocaleString('id-ID')}</span>
-                        </div>
-                        <button class="btn-delete" onclick="removeFromCart(${item.id})">Hapus</button>
-                    </div>
-                `;
-            });
-
-            cartItemsContainer.innerHTML = html;
-            totalPrice.innerText = `Rp ${total.toLocaleString('id-ID')}`;
-        }
-
-        function checkout() {
-            if (cart.length === 0) {
-                alert('Keranjang Anda kosong!');
-                return;
-            }
-
-            const playerName = prompt("Masukkan Nama Karakter / UCP SA-MP Kamu:");
-            if (!playerName) return;
-
-            let itemsList = cart.map(i => i.name).join(", ");
-            let totalAmount = cart.reduce((sum, item) => sum + item.price, 0);
-
-            // Simpan pesanan ke Local Storage agar bisa dilihat Developer
-            let orders = JSON.parse(localStorage.getItem('ghirp_orders') || '[]');
-            orders.push({
-                time: new Date().toLocaleString('id-ID'),
-                player: playerName,
-                items: itemsList,
-                total: totalAmount
-            });
-            localStorage.setItem('ghirp_orders', JSON.stringify(orders));
-
-            alert(`Terima kasih ${playerName}! Pesanan Anda [${itemsList}] berhasil dicatat.`);
-            cart = [];
-            updateCartUI();
-            toggleCart();
-        }
-
-        /* 2. Fungsi Modal VIP */
-        function openVipModal() {
-            closeAllModals();
-            document.getElementById('vip-modal').classList.add('active');
-            document.getElementById('overlay').classList.add('active');
-        }
-
-        function closeVipModal() {
-            document.getElementById('vip-modal').classList.remove('active');
-            document.getElementById('overlay').classList.remove('active');
-        }
-
-        /* 3. Fungsi Developer Panel */
-        // Shortcut rahasia: Tekan Ctrl + Shift + D
+        // Dev Panel Shortcut: Ctrl + Shift + D
         document.addEventListener('keydown', function(e) {
             if (e.ctrlKey && e.shiftKey && (e.key === 'D' || e.key === 'd')) {
                 e.preventDefault();
-                let inputPass = prompt("Masukkan Password Developer:");
-                if (inputPass === DEV_PASS) {
+                let pwd = prompt("Masukkan Password Developer:");
+                if (pwd === "admin123") {
                     localStorage.setItem('is_dev', 'true');
-                    alert("Mode Developer diaktifkan!");
                     checkDevStatus();
-                } else if (inputPass !== null) {
+                    openDevPanel();
+                } else if (pwd !== null) {
                     alert("Password Salah!");
                 }
             }
@@ -913,57 +319,130 @@
 
         function checkDevStatus() {
             if (localStorage.getItem('is_dev') === 'true') {
-                document.getElementById('dev-menu-btn').style.display = 'inline-block';
+                document.getElementById('devPanelNav').classList.remove('hidden');
             }
         }
 
-        function openDevModal() {
-            closeAllModals();
-            renderDevOrders();
-            document.getElementById('dev-modal').classList.add('active');
-            document.getElementById('overlay').classList.add('active');
+        function closeWelcomeModal() {
+            const modal = document.getElementById('welcomeModal');
+            modal.classList.add('opacity-0', 'pointer-events-none');
+            document.body.classList.remove('modal-active');
         }
 
-        function closeDevModal() {
-            document.getElementById('dev-modal').classList.remove('active');
-            document.getElementById('overlay').classList.remove('active');
+        function addToCart(name, price) {
+            cart.push({ name, price });
+            updateCart();
+            alert(`"${name}" berhasil ditambahkan ke keranjang!`);
         }
 
-        function renderDevOrders() {
-            const devBody = document.getElementById('dev-orders-body');
-            let orders = JSON.parse(localStorage.getItem('ghirp_orders') || '[]');
+        function updateCart() {
+            document.getElementById('cartCount').innerText = cart.length;
+            const itemsContainer = document.getElementById('cartItems');
+            const checkoutForm = document.getElementById('checkoutForm');
+            
+            if (cart.length === 0) {
+                itemsContainer.innerHTML = '<p class="text-slate-400 text-sm text-center py-4">Keranjang masih kosong.</p>';
+                checkoutForm.classList.add('hidden');
+            } else {
+                checkoutForm.classList.remove('hidden');
+                itemsContainer.innerHTML = cart.map((item, index) => `
+                    <div class="flex justify-between items-center bg-slate-900 p-2.5 rounded-lg border border-slate-700 text-sm">
+                        <span class="text-white font-medium">${item.name}</span>
+                        <div class="flex items-center space-x-3">
+                            <span class="text-blue-400 font-bold">Rp ${item.price.toLocaleString('id-ID')}</span>
+                            <button onclick="removeFromCart(${index})" class="text-red-400 hover:text-red-300"><i class="fa-solid fa-trash-can"></i></button>
+                        </div>
+                    </div>
+                `).join('');
+            }
 
-            if (orders.length === 0) {
-                devBody.innerHTML = '<tr><td colspan="4" style="text-align:center; color:#94a3b8;">Belum ada pesanan masuk.</td></tr>';
+            const total = cart.reduce((sum, item) => sum + item.price, 0);
+            document.getElementById('cartTotal').innerText = `Rp ${total.toLocaleString('id-ID')}`;
+        }
+
+        function removeFromCart(index) {
+            cart.splice(index, 1);
+            updateCart();
+        }
+
+        function toggleCartModal() {
+            const modal = document.getElementById('cartModal');
+            modal.classList.toggle('opacity-0');
+            modal.classList.toggle('pointer-events-none');
+            document.body.classList.toggle('modal-active');
+        }
+
+        function processCheckout() {
+            if (cart.length === 0) {
+                alert("Keranjang kamu masih kosong!");
                 return;
             }
 
-            devBody.innerHTML = orders.map(o => `
-                <tr>
-                    <td>${o.time}</td>
-                    <td style="color:#38bdf8; font-weight:bold;">${o.player}</td>
-                    <td>${o.items}</td>
-                    <td style="color:#22c55e; font-weight:bold;">Rp ${o.total.toLocaleString('id-ID')}</td>
-                </tr>
-            `).join('');
+            const icName = document.getElementById('icNameInput').value.trim();
+            if (!icName) {
+                alert("Harap masukkan Nama IC / Character SA-MP kamu!");
+                return;
+            }
+
+            const total = cart.reduce((sum, item) => sum + item.price, 0);
+            const itemsList = cart.map(i => i.name).join(', ');
+            
+            const newOrder = {
+                timestamp: new Date().toLocaleString('id-ID'),
+                icName: icName,
+                items: itemsList,
+                total: total
+            };
+
+            // Save order to LocalStorage
+            let existingOrders = JSON.parse(localStorage.getItem('ghirp_orders')) || [];
+            existingOrders.push(newOrder);
+            localStorage.setItem('ghirp_orders', JSON.stringify(existingOrders));
+
+            alert(`Terima kasih ${icName}!\nPesanan kamu (${itemsList}) telah tercatat.\nSilakan konfirmasi ke Admin/Owner.`);
+            
+            cart = [];
+            document.getElementById('icNameInput').value = '';
+            updateCart();
+            toggleCartModal();
         }
 
-        function clearOrders() {
-            if (confirm("Apakah Anda yakin ingin menghapus semua data pesanan?")) {
+        function openDevPanel() {
+            const modal = document.getElementById('devModal');
+            const tbody = document.getElementById('devOrderTableBody');
+            const orders = JSON.parse(localStorage.getItem('ghirp_orders')) || [];
+
+            if (orders.length === 0) {
+                tbody.innerHTML = '<tr><td colspan="4" class="p-4 text-center text-slate-500">Belum ada pesanan masuk.</td></tr>';
+            } else {
+                tbody.innerHTML = orders.map(order => `
+                    <tr>
+                        <td class="p-3 text-xs text-slate-400">${order.timestamp}</td>
+                        <td class="p-3 font-semibold text-white">${order.icName}</td>
+                        <td class="p-3 text-blue-300">${order.items}</td>
+                        <td class="p-3 text-emerald-400 font-bold">Rp ${order.total.toLocaleString('id-ID')}</td>
+                    </tr>
+                `).join('');
+            }
+
+            modal.classList.remove('opacity-0', 'pointer-events-none');
+            document.body.classList.add('modal-active');
+        }
+
+        function closeDevPanel() {
+            const modal = document.getElementById('devModal');
+            modal.classList.add('opacity-0', 'pointer-events-none');
+            document.body.classList.remove('modal-active');
+        }
+
+        function clearDevOrders() {
+            if (confirm("Apakah Anda yakin ingin menghapus seluruh data catatan pesanan?")) {
                 localStorage.removeItem('ghirp_orders');
-                renderDevOrders();
+                openDevPanel();
             }
         }
 
-        function closeAllModals() {
-            document.getElementById('cart-sidebar').classList.remove('open');
-            document.getElementById('vip-modal').classList.remove('active');
-            document.getElementById('dev-modal').classList.remove('active');
-            document.getElementById('overlay').classList.remove('active');
-        }
-
-        // Inisialisasi awal saat halaman dimuat
-        updateCartUI();
+        // Initialize dev status on page load
         checkDevStatus();
     </script>
 </body>
