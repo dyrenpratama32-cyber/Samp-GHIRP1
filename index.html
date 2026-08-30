@@ -24,20 +24,27 @@
     <nav class="bg-slate-800 border-b border-slate-700 sticky top-0 z-40 shadow-lg">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="flex items-center justify-between h-16">
+                <!-- LOGO -->
                 <div class="flex items-center space-x-3">
-                    <span class="text-2xl font-black tracking-wider text-blue-500">GHIRP <span class="text-red-500">STORE</span></span>
+                    <span class="text-xl sm:text-2xl font-black tracking-wider text-blue-500">GHIRP <span class="text-red-500">STORE</span></span>
                 </div>
-                <div class="hidden md:flex items-center space-x-6 font-medium text-sm">
-                    <a href="#" class="text-white hover:text-blue-400 transition">Beranda</a>
-                    <a href="#vehicles" class="text-slate-300 hover:text-blue-400 transition">Kendaraan</a>
-                    <a href="#" onclick="toggleVipModal()" class="text-amber-400 hover:text-amber-300 transition"><i class="fa-solid font-bold fa-crown mr-1"></i> VIP Status</a>
+
+                <!-- NAV MENU (Tampil di HP & Laptop) -->
+                <div class="flex items-center space-x-3 sm:space-x-6 font-medium text-xs sm:text-sm">
+                    <a href="#vehicles" class="text-slate-300 hover:text-blue-400 transition hidden sm:inline">Kendaraan</a>
+                    
+                    <!-- TOMBOL VIP STATUS (SELALU MUNCUL) -->
+                    <button onclick="toggleVipModal()" class="bg-amber-500/10 border border-amber-500/40 text-amber-400 hover:bg-amber-500 hover:text-slate-950 font-bold py-1.5 px-3 rounded-lg transition flex items-center">
+                        <i class="fa-solid fa-crown mr-1.5 text-amber-400"></i> VIP Status
+                    </button>
+
+                    <!-- DEV PANEL (MUNCUL JIKA AKTIF) -->
                     <a href="#" id="devPanelNav" onclick="openDevPanel()" class="hidden text-red-400 hover:text-red-300 transition"><i class="fa-solid fa-gear mr-1"></i> Dev Panel</a>
-                    <a href="#" onclick="alert('Hubungi Admin di Discord GHIRP untuk bantuan!')" class="text-slate-300 hover:text-blue-400 transition">Bantuan</a>
-                </div>
-                <div>
-                    <button onclick="toggleCartModal()" class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-lg flex items-center shadow-md transition">
-                        <i class="fa-solid fa-cart-shopping mr-2"></i> Keranjang 
-                        <span id="cartCount" class="ml-2 bg-red-500 text-white text-xs px-2 py-0.5 rounded-full">0</span>
+
+                    <!-- KERANJANG -->
+                    <button onclick="toggleCartModal()" class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-1.5 px-3 sm:py-2 sm:px-4 rounded-lg flex items-center shadow-md transition">
+                        <i class="fa-solid fa-cart-shopping mr-1.5"></i> <span class="hidden sm:inline">Keranjang</span> 
+                        <span id="cartCount" class="ml-1.5 bg-red-500 text-white text-xs px-2 py-0.5 rounded-full">0</span>
                     </button>
                 </div>
             </div>
@@ -45,16 +52,21 @@
     </nav>
 
     <!-- HERO SECTION -->
-    <header class="bg-gradient-to-b from-slate-800 to-slate-900 py-12 border-b border-slate-800 text-center">
+    <header class="bg-gradient-to-b from-slate-800 to-slate-900 py-10 sm:py-12 border-b border-slate-800 text-center">
         <div class="max-w-4xl mx-auto px-4">
-            <h1 class="text-4xl md:text-5xl font-extrabold text-white tracking-tight mb-4">Toko Kendaraan Terbatas GHIRP</h1>
-            <p class="text-slate-400 text-lg">Dapatkan kendaraan langka, militer, eksklusif, serta status VIP untuk karakter Roleplay kamu!</p>
+            <h1 class="text-3xl sm:text-5xl font-extrabold text-white tracking-tight mb-3">Toko Kendaraan & VIP GHIRP</h1>
+            <p class="text-slate-400 text-sm sm:text-lg">Dapatkan kendaraan langka, militer, eksklusif, serta status VIP untuk karakter Roleplay kamu!</p>
         </div>
     </header>
 
     <!-- MAIN CONTENT / CATALOG -->
-    <main id="vehicles" class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 flex-grow">
-        <h2 class="text-2xl font-bold text-white mb-6 border-l-4 border-blue-500 pl-3">Koleksi Kendaraan Terbatas</h2>
+    <main id="vehicles" class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 flex-grow">
+        <div class="flex justify-between items-center mb-6">
+            <h2 class="text-xl sm:text-2xl font-bold text-white border-l-4 border-blue-500 pl-3">Koleksi Kendaraan Terbatas</h2>
+            <button onclick="toggleVipModal()" class="bg-amber-500 text-slate-950 text-xs font-bold py-2 px-3 rounded-lg shadow hover:bg-amber-400 transition flex items-center">
+                <i class="fa-solid fa-crown mr-1"></i> Beli VIP
+            </button>
+        </div>
         
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6" id="productGrid">
             <!-- Product Item 1 -->
@@ -201,7 +213,7 @@
     <div id="vipModal" class="modal opacity-0 pointer-events-none fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-sm">
         <div class="bg-slate-800 border border-amber-500/50 rounded-2xl max-w-3xl w-full p-6 shadow-2xl overflow-y-auto max-h-[90vh]">
             <div class="flex justify-between items-center mb-6 pb-2 border-b border-slate-700">
-                <h3 class="text-2xl font-black text-amber-400 flex items-center"><i class="fa-solid fa-crown mr-2"></i> Pilihan Paket VIP GHIRP</h3>
+                <h3 class="text-xl sm:text-2xl font-black text-amber-400 flex items-center"><i class="fa-solid fa-crown mr-2"></i> Pilihan Paket VIP GHIRP</h3>
                 <button onclick="toggleVipModal()" class="text-slate-400 hover:text-white text-2xl">&times;</button>
             </div>
 
