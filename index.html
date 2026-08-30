@@ -5,443 +5,239 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>SA-MP DEALERSHIP STORE</title>
     <style>
-        /* --- RESET DASAR --- */
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-        }
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', Arial, sans-serif; }
+        body { background-color: #121316; color: #ffffff; padding: 15px; }
 
-        body {
-            background-color: #121212; /* Warna latar belakang gelap */
-            color: #ffffff;
-            display: flex;
-            flex-direction: column;
-            min-height: 100vh;
-        }
+        /* Header */
+        header { text-align: center; padding: 15px 0 25px; border-bottom: 2px solid #ff7700; margin-bottom: 20px; }
+        header h1 { color: #ff7700; font-size: 1.8rem; font-weight: 800; letter-spacing: 1px; }
 
-        h1, h2, h3 {
-            color: #ff9900; /* Warna aksen oranye SA-MP */
-            text-transform: uppercase;
-            letter-spacing: 1px;
-        }
+        /* Layout Utama */
+        .container { display: flex; flex-wrap: wrap; gap: 20px; max-width: 1400px; margin: 0 auto; }
+        .catalog { flex: 2; min-width: 320px; }
+        .sidebar { flex: 1; min-width: 300px; display: flex; flex-direction: column; gap: 20px; }
 
-        /* --- TATA LETAK UTAMA --- */
-        .page-wrapper {
-            display: flex;
-            flex-direction: row;
-            flex-grow: 1;
-            padding: 20px;
-            gap: 20px;
-        }
+        .section-title { font-size: 1.3rem; margin-bottom: 15px; color: #ffffff; font-weight: 700; }
 
-        /* Katalog Utama */
-        .catalog-container {
-            flex: 2; /* Mengambil 2 bagian ruang */
-            display: flex;
-            flex-direction: column;
-            gap: 20px;
-        }
+        /* Grid Produk */
+        .grid-vehicles { display: grid; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); gap: 15px; }
+        
+        .card { background: #1c1e24; border-radius: 8px; overflow: hidden; border: 1px solid #2a2d37; display: flex; flex-direction: column; }
+        .card img { width: 100%; height: 150px; object-fit: contain; background: #0c0d0e; padding: 5px; }
+        .card-body { padding: 12px; display: flex; flex-direction: column; flex-grow: 1; justify-content: space-between; }
+        .card-title { font-size: 1.1rem; font-weight: bold; color: #fff; margin-bottom: 4px; }
+        .card-category { font-size: 0.85rem; color: #a0a5b5; margin-bottom: 6px; }
+        .card-price { font-size: 1rem; color: #a0a5b5; margin-bottom: 12px; }
+        .card-price span { color: #00ff66; font-weight: bold; }
 
-        /* Sidebar Kanan (Keranjang) */
-        .sidebar-container {
-            flex: 1; /* Mengambil 1 bagian ruang */
-            display: flex;
-            flex-direction: column;
-            gap: 20px;
-        }
+        /* Tombol Beli */
+        .btn-add { background: transparent; border: 1.5px solid #ff7700; color: #ff7700; padding: 8px; border-radius: 6px; font-weight: bold; cursor: pointer; transition: 0.2s; font-size: 0.85rem; }
+        .btn-add:hover { background: #ff7700; color: #000; }
 
-        /* --- KOMPONEN JUDUL --- */
-        .main-header {
-            text-align: center;
-            padding: 30px 0;
-            background: linear-gradient(180deg, #1f1f1f 0%, #121212 100%);
-            border-bottom: 2px solid #ff9900;
-        }
+        /* Panel Keranjang */
+        .panel { background: #1c1e24; border-radius: 8px; padding: 15px; border: 1px solid #2a2d37; }
+        .panel-cart { border: 1.5px solid #ff7700; }
+        .panel-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px; border-bottom: 1px solid #2a2d37; padding-bottom: 10px; }
+        .panel-header h2 { font-size: 1.1rem; color: #ff7700; display: flex; align-items: center; gap: 8px; }
 
-        .section-header {
-            font-size: 1.5rem;
-            margin-bottom: 10px;
-        }
+        /* List Keranjang */
+        .cart-list { max-height: 250px; overflow-y: auto; margin-bottom: 15px; }
+        .cart-item { display: flex; align-items: center; justify-content: space-between; padding: 10px 0; border-bottom: 1px solid #2a2d37; font-size: 0.9rem; }
+        .cart-item-info { display: flex; align-items: center; gap: 10px; }
+        .cart-item-img { width: 45px; height: 35px; border-radius: 4px; object-fit: contain; background: #000; }
+        .cart-item-name { font-weight: bold; }
+        .cart-item-price { color: #a0a5b5; font-size: 0.8rem; }
+        
+        /* Kontrol Aksi Hapus & Jumlah */
+        .cart-controls { display: flex; align-items: center; gap: 6px; }
+        .btn-qty { background: #2a2d37; border: none; color: #fff; width: 24px; height: 24px; border-radius: 4px; font-weight: bold; cursor: pointer; display: flex; align-items: center; justify-content: center; }
+        .btn-qty:hover { background: #ff7700; color: #000; }
+        .cart-item-qty { font-weight: bold; font-size: 0.85rem; padding: 0 4px; }
+        .btn-delete { background: #ff4444; border: none; color: #fff; width: 24px; height: 24px; border-radius: 4px; font-weight: bold; cursor: pointer; margin-left: 6px; display: flex; align-items: center; justify-content: center; }
+        .btn-delete:hover { background: #cc0000; }
 
-        /* --- GRIED KATALOG KENDARAAN --- */
-        .grid-container {
-            display: grid;
-            /* Membuat kolom adaptif, minimal 250px */
-            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-            gap: 20px;
-        }
+        /* Total & Checkout */
+        .total-box { display: flex; justify-content: space-between; font-size: 1.2rem; font-weight: bold; margin-bottom: 12px; }
+        .total-box span:last-child { color: #00ff66; }
+        .btn-checkout { width: 100%; background: #00cc55; color: #fff; border: none; padding: 12px; border-radius: 6px; font-weight: bold; cursor: pointer; font-size: 0.95rem; }
+        .btn-checkout:hover { background: #00e660; }
 
-        /* --- KARTU PRODUK --- */
-        .product-card {
-            background-color: #1f1f1f;
-            border-radius: 12px;
-            overflow: hidden;
-            border: 1px solid #333;
-            transition: transform 0.2s ease, box-shadow 0.2s ease;
-            display: flex;
-            flex-direction: column;
-        }
-
-        .product-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 5px 15px rgba(255, 153, 0, 0.3);
-            border-color: #ff9900;
-        }
-
-        /* Gambar Produk */
-        .product-image {
-            width: 100%;
-            height: 180px;
-            background-color: #000;
-            overflow: hidden;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            border-bottom: 2px solid #333;
-        }
-
-        .product-image img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover; /* Gambar penuh dan proporsional */
-        }
-
-        /* Detail Produk */
-        .product-details {
-            padding: 15px;
-            flex-grow: 1;
-            display: flex;
-            flex-direction: column;
-            justify-content: space-between;
-        }
-
-        .product-name {
-            font-size: 1.25rem;
-            margin-bottom: 5px;
-            color: #fff;
-        }
-
-        .product-meta {
-            font-size: 0.9rem;
-            color: #aaa;
-            margin-bottom: 10px;
-        }
-
-        .product-price {
-            font-size: 1.3rem;
-            font-weight: bold;
-            color: #00ff22; /* Warna harga hijau */
-            margin-bottom: 15px;
-        }
-
-        /* Tombol Tambah */
-        .btn-add {
-            background-color: transparent;
-            color: #ff9900;
-            border: 2px solid #ff9900;
-            border-radius: 8px;
-            padding: 10px 15px;
-            font-size: 1rem;
-            font-weight: bold;
-            text-transform: uppercase;
-            cursor: pointer;
-            width: 100%;
-            transition: background-color 0.2s, color 0.2s;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 8px;
-        }
-
-        .btn-add:hover {
-            background-color: #ff9900;
-            color: #000;
-        }
-
-        /* --- PANEL KERANJANG BELANJA --- */
-        .cart-panel {
-            background-color: #1f1f1f;
-            border-radius: 12px;
-            border: 2px solid #ff9900;
-            padding: 20px;
-        }
-
-        .cart-items-count {
-            color: #aaa;
-            font-size: 1rem;
-            margin-bottom: 20px;
-        }
-
-        .cart-list {
-            margin-bottom: 20px;
-        }
-
-        .cart-item {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 10px 0;
-            border-bottom: 1px solid #333;
-        }
-
-        .cart-item:last-child {
-            border-bottom: none;
-        }
-
-        .cart-item-name {
-            font-weight: bold;
-            color: #fff;
-        }
-
-        .cart-item-price {
-            color: #00ff22;
-            font-weight: bold;
-        }
-
-        .cart-total-box {
-            display: flex;
-            justify-content: space-between;
-            font-size: 1.3rem;
-            font-weight: bold;
-            border-top: 2px solid #333;
-            padding-top: 15px;
-            margin-bottom: 15px;
-        }
-
-        .cart-total-price {
-            color: #00ff22;
-        }
-
-        /* Tombol Checkout */
-        .btn-checkout {
-            background-color: #00ff22;
-            color: #000;
-            border: none;
-            border-radius: 8px;
-            padding: 15px;
-            font-size: 1.1rem;
-            font-weight: bold;
-            text-transform: uppercase;
-            cursor: pointer;
-            width: 100%;
-            transition: background-color 0.2s;
-        }
-
-        .btn-checkout:hover {
-            background-color: #00cc1b;
-        }
-
-        /* --- PANEL RIWAYAT PEMBELIAN --- */
-        .history-panel {
-            background-color: #1a1a1a;
-            border-radius: 12px;
-            border: 1px solid #333;
-            padding: 20px;
-        }
-
-        .history-list {
-            max-height: 250px;
-            overflow-y: auto; /* Scrollbar jika terlalu panjang */
-            font-size: 0.9rem;
-            color: #ccc;
-            padding-right: 10px;
-        }
-
-        /* Gaya scrollbar untuk panel riwayat */
-        .history-list::-webkit-scrollbar {
-            width: 8px;
-        }
-
-        .history-list::-webkit-scrollbar-thumb {
-            background-color: #333;
-            border-radius: 4px;
-        }
-
-        .history-entry {
-            margin-bottom: 12px;
-            line-height: 1.4;
-        }
-
-        .history-time {
-            color: #ff9900;
-            font-weight: bold;
-        }
-
-        .history-purchased {
-            color: #fff;
-            font-weight: bold;
-        }
-
-        .history-price {
-            color: #00ff22;
-            font-weight: bold;
-        }
-
-        /* --- MEDIA QUERIES UNTUK RESPONSIVE (HP) --- */
-        @media (max-width: 900px) {
-            .page-wrapper {
-                flex-direction: column; /* Tumpuk katalog dan sidebar */
-                padding: 10px;
-            }
-
-            .main-header {
-                padding: 20px 0;
-            }
-
-            .main-header h1 {
-                font-size: 1.8rem;
-            }
-
-            .section-header {
-                font-size: 1.3rem;
-                text-align: center;
-            }
-
-            .product-card {
-                /* Sedikit penyesuaian untuk kartu di HP */
-            }
-
-            /* Jaga agar panel keranjang tetap terlihat bagus di HP */
-            .cart-panel, .history-panel {
-                width: 100%;
-            }
-        }
+        /* Riwayat */
+        .history-list { max-height: 180px; overflow-y: auto; font-size: 0.82rem; color: #a0a5b5; }
+        .history-item { margin-bottom: 8px; line-height: 1.3; }
+        .history-item b { color: #fff; }
+        .history-price { color: #00ff66; font-weight: bold; }
     </style>
 </head>
 <body>
 
-    <header class="main-header">
+    <header>
         <h1>SA-MP DEALERSHIP STORE</h1>
     </header>
 
-    <main class="page-wrapper">
-        
-        <section class="catalog-container">
-            <h2 class="section-header">Vehicle Catalog</h2>
-            <div class="grid-container">
-                
-                <article class="product-card">
-                    <div class="product-image">
-                        <img src="https://wiki.sa-mp.com/w/images/d/d1/Vehicle_411.jpg" alt="Infernus">
-                    </div>
-                    <div class="product-details">
-                        <div>
-                            <h3 class="product-name">Infernus</h3>
-                            <p class="product-meta">Kategori: Mobil Sport</p>
-                            <p class="product-price">$250,000</p>
-                        </div>
-                        <button class="btn-add">
-                            <span>🛒</span> + TAMBAH KE KERANJANG
-                        </button>
-                    </div>
-                </article>
+    <div class="container">
+        <!-- KATALOG KENDARAAN -->
+        <div class="catalog">
+            <h2 class="section-title">Vehicle Catalog</h2>
+            <div class="grid-vehicles" id="vehicle-grid"></div>
+        </div>
 
-                <article class="product-card">
-                    <div class="product-image">
-                        <img src="https://wiki.sa-mp.com/w/images/e/e0/Vehicle_522.jpg" alt="NRG-500">
-                    </div>
-                    <div class="product-details">
-                        <div>
-                            <h3 class="product-name">NRG-500</h3>
-                            <p class="product-meta">Kategori: Motor Sport</p>
-                            <p class="product-price">$100,000</p>
-                        </div>
-                        <button class="btn-add">
-                            <span>🛒</span> + TAMBAH KE KERANJANG
-                        </button>
-                    </div>
-                </article>
-
-                <article class="product-card">
-                    <div class="product-image">
-                        <img src="https://wiki.sa-mp.com/w/images/0/07/Vehicle_519.jpg" alt="Shamal Jet">
-                    </div>
-                    <div class="product-details">
-                        <div>
-                            <h3 class="product-name">Shamal Jet</h3>
-                            <p class="product-meta">Kategori: Pesawat Jet</p>
-                            <p class="product-price">$1,200,000</p>
-                        </div>
-                        <button class="btn-add">
-                            <span>🛒</span> + TAMBAH KE KERANJANG
-                        </button>
-                    </div>
-                </article>
-
-                <article class="product-card">
-                    <div class="product-image">
-                        <img src="https://wiki.sa-mp.com/w/images/d/d7/Vehicle_487.jpg" alt="Maverick">
-                    </div>
-                    <div class="product-details">
-                        <div>
-                            <h3 class="product-name">Maverick</h3>
-                            <p class="product-meta">Kategori: Helikopter</p>
-                            <p class="product-price">$500,000</p>
-                        </div>
-                        <button class="btn-add">
-                            <span>🛒</span> + TAMBAH KE KERANJANG
-                        </button>
-                    </div>
-                </article>
-
-            </div>
-        </section>
-
-        <aside class="sidebar-container">
-            
-            <div class="cart-panel">
-                <h2>🛒 Keranjang Belanja</h2>
-                <p class="cart-items-count">(4 Item)</p>
-                
-                <div class="cart-list">
-                    <div class="cart-item">
-                        <span class="cart-item-name">Infernus x2</span>
-                        <span class="cart-item-price">$500,000</span>
-                    </div>
-                    <div class="cart-item">
-                        <span class="cart-item-name">Shamal Jet x1</span>
-                        <span class="cart-item-price">$1,200,000</span>
-                    </div>
-                    <div class="cart-item">
-                        <span class="cart-item-name">NRG-500 x1</span>
-                        <span class="cart-item-price">$100,000</span>
-                    </div>
+        <!-- SIDEBAR KERANJANG & RIWAYAT -->
+        <div class="sidebar">
+            <div class="panel panel-cart">
+                <div class="panel-header">
+                    <h2>🛒 KERANJANG BELANJA</h2>
+                    <span id="cart-count" style="color: #a0a5b5; font-size: 0.9rem;">(0 Item)</span>
                 </div>
-                
-                <div class="cart-total-box">
+
+                <div class="cart-list" id="cart-items">
+                    <p style="text-align: center; color: #777; padding: 20px 0;">Keranjang belanja kosong</p>
+                </div>
+
+                <div class="total-box">
                     <span>Total:</span>
-                    <span class="cart-total-price">$1,800,000</span>
+                    <span id="cart-total">$0</span>
                 </div>
-                
-                <button class="btn-checkout">
-                    ✅ BAYAR SEKARANG / CHECKOUT
-                </button>
+
+                <button class="btn-checkout" onclick="checkout()">✓ BAYAR SEKARANG / CHECKOUT</button>
             </div>
 
-            <div class="history-panel">
-                <h2>📋 Riwayat Pembelian Player</h2>
-                
-                <div class="history-list">
-                    <div class="history-entry">
-                        <span class="history-time">[20.32]</span> - Pembelian 1x <span class="history-purchased">Infernus</span> &amp; 1x <span class="history-purchased">Shamal Jet</span> Berhasil! (<span class="history-price">$1,450,000</span>)
-                    </div>
-                    <div class="history-entry">
-                        <span class="history-time">[20.30]</span> - Pembelian 2x <span class="history-purchased">Maverick</span> Berhasil! (<span class="history-price">$1,000,000</span>)
-                    </div>
-                    <div class="history-entry">
-                        <span class="history-time">[20.25]</span> - Pembelian 1x <span class="history-purchased">NRG-500</span> Berhasil! (<span class="history-price">$100,000</span>)
-                    </div>
-                    <div class="history-entry">
-                        <span class="history-time">[20.10]</span> - Pembelian 1x <span class="history-purchased">Cheetah</span> Berhasil! (<span class="history-price">$220,000</span>)
-                    </div>
-                    </div>
+            <div class="panel">
+                <div class="panel-header">
+                    <h2 style="color: #ff7700;">📋 RIWAYAT PEMBELIAN PLAYER</h2>
+                </div>
+                <div class="history-list" id="history-items">
+                    <div class="history-item">Belum ada riwayat transaksi.</div>
+                </div>
             </div>
+        </div>
+    </div>
 
-        </aside>
+    <script>
+        // Data Kendaraan Beserta Link Gambar SA-MP Asli
+        const vehicles = [
+            { id: 1, name: "Infernus", cat: "Mobil Sport", price: 250000, img: "https://wiki.sa-mp.com/w/images/d/d1/Vehicle_411.jpg" },
+            { id: 2, name: "Turismo", cat: "Mobil Sport", price: 200000, img: "https://wiki.sa-mp.com/w/images/5/52/Vehicle_506.jpg" },
+            { id: 3, name: "Bullet", cat: "Mobil Sport", price: 180000, img: "https://wiki.sa-mp.com/w/images/1/1a/Vehicle_541.jpg" },
+            { id: 4, name: "NRG-500", cat: "Motor Sport", price: 100000, img: "https://wiki.sa-mp.com/w/images/e/e0/Vehicle_522.jpg" },
+            { id: 5, name: "PCJ-600", cat: "Motor Sport", price: 60000, img: "https://wiki.sa-mp.com/w/images/8/87/Vehicle_461.jpg" },
+            { id: 6, name: "Shamal Jet", cat: "Pesawat", price: 1200000, img: "https://wiki.sa-mp.com/w/images/0/07/Vehicle_519.jpg" },
+            { id: 7, name: "Maverick", cat: "Helikopter", price: 500000, img: "https://wiki.sa-mp.com/w/images/d/d7/Vehicle_487.jpg" }
+        ];
 
-    </main>
+        let cart = {};
 
+        function renderCatalog() {
+            const grid = document.getElementById('vehicle-grid');
+            grid.innerHTML = vehicles.map(v => `
+                <div class="card">
+                    <img src="${v.img}" alt="${v.name}">
+                    <div class="card-body">
+                        <div>
+                            <div class="card-title">${v.name}</div>
+                            <div class="card-category">Kategori: ${v.cat}</div>
+                            <div class="card-price">Price: <span>$${v.price.toLocaleString()}</span></div>
+                        </div>
+                        <button class="btn-add" onclick="addToCart(${v.id})">+ TAMBAH KE KERANJANG</button>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function addToCart(id) {
+            if (cart[id]) {
+                cart[id].qty += 1;
+            } else {
+                const item = vehicles.find(v => v.id === id);
+                cart[id] = { ...item, qty: 1 };
+            }
+            updateCart();
+        }
+
+        function reduceCart(id) {
+            if (cart[id]) {
+                cart[id].qty -= 1;
+                if (cart[id].qty <= 0) {
+                    delete cart[id];
+                }
+            }
+            updateCart();
+        }
+
+        function deleteFromCart(id) {
+            if (cart[id]) {
+                delete cart[id];
+            }
+            updateCart();
+        }
+
+        function updateCart() {
+            const cartContainer = document.getElementById('cart-items');
+            const keys = Object.keys(cart);
+            let total = 0;
+            let totalItems = 0;
+
+            if (keys.length === 0) {
+                cartContainer.innerHTML = `<p style="text-align: center; color: #777; padding: 20px 0;">Keranjang belanja kosong</p>`;
+            } else {
+                cartContainer.innerHTML = keys.map(key => {
+                    const item = cart[key];
+                    const subtotal = item.price * item.qty;
+                    total += subtotal;
+                    totalItems += item.qty;
+                    return `
+                        <div class="cart-item">
+                            <div class="cart-item-info">
+                                <img src="${item.img}" class="cart-item-img">
+                                <div>
+                                    <div class="cart-item-name">${item.name}</div>
+                                    <div class="cart-item-price">$${item.price.toLocaleString()}</div>
+                                </div>
+                            </div>
+                            <div class="cart-controls">
+                                <button class="btn-qty" onclick="reduceCart(${key})" title="Kurangi">-</button>
+                                <span class="cart-item-qty">${item.qty}</span>
+                                <button class="btn-qty" onclick="addToCart(${key})" title="Tambah">+</button>
+                                <button class="btn-delete" onclick="deleteFromCart(${key})" title="Hapus">✕</button>
+                            </div>
+                        </div>
+                    `;
+                }).join('');
+            }
+
+            document.getElementById('cart-count').innerText = `(${totalItems} Item)`;
+            document.getElementById('cart-total').innerText = `$${total.toLocaleString()}`;
+        }
+
+        function checkout() {
+            const keys = Object.keys(cart);
+            if (keys.length === 0) return alert("Keranjang Anda masih kosong!");
+
+            let total = 0;
+            let summary = [];
+            keys.forEach(key => {
+                const item = cart[key];
+                total += item.price * item.qty;
+                summary.push(`${item.qty}x ${item.name}`);
+            });
+
+            const history = document.getElementById('history-items');
+            const time = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+
+            if (history.innerHTML.includes("Belum ada riwayat")) history.innerHTML = "";
+
+            history.innerHTML = `
+                <div class="history-item">
+                    [${time}] - Pembelian <b>${summary.join(', ')}</b> Berhasil! (<span class="history-price">$${total.toLocaleString()}</span>)
+                </div>
+            ` + history.innerHTML;
+
+            alert("Pembelian Berhasil! Total: $" + total.toLocaleString());
+            cart = {};
+            updateCart();
+        }
+
+        renderCatalog();
+    </script>
 </body>
 </html>
