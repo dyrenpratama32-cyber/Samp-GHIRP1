@@ -33,9 +33,7 @@
       overflow-x: hidden;
     }
 
-    /* =========================================
-       TAHAP 1: MODERN LOGIN OVERLAY (FIXED)
-       ========================================= */
+    /* TAHAP 1: NODEREN LOGIN OVERLAY */
     #loginOverlay {
       position: fixed;
       top: 0;
@@ -124,13 +122,7 @@
       margin-top: 10px;
     }
 
-    .btn-noderen:active {
-      transform: scale(0.98);
-    }
-
-    /* =========================================
-       TAHAP 2: ETALASE TOKO & CONTAINER
-       ========================================= */
+    /* TAHAP 2: ETALASE TOKO */
     #mainContent {
       display: none;
       padding: 20px;
@@ -258,7 +250,7 @@
       color: #000;
     }
 
-    /* Floating Cart & AI Widget */
+    /* FLOATING CART & AI WIDGET */
     .floating-cart {
       position: fixed;
       bottom: 20px;
@@ -277,8 +269,8 @@
       position: fixed;
       bottom: 80px;
       left: 20px;
-      width: 300px;
-      height: 380px;
+      width: 330px;
+      height: 420px;
       background: var(--card-bg);
       border: 1px solid var(--primary-cyan);
       border-radius: 12px;
@@ -286,31 +278,34 @@
       flex-direction: column;
       z-index: 1001;
       overflow: hidden;
+      box-shadow: 0 0 25px rgba(0,0,0,0.5);
     }
 
     .ai-header {
-      background: rgba(0, 240, 255, 0.1);
-      padding: 10px;
+      background: rgba(0, 240, 255, 0.15);
+      padding: 12px;
       font-weight: bold;
       color: var(--primary-cyan);
       display: flex;
       justify-content: space-between;
+      border-bottom: 1px solid rgba(0, 240, 255, 0.2);
     }
 
     .ai-logs {
       flex: 1;
-      padding: 10px;
+      padding: 12px;
       overflow-y: auto;
       font-size: 0.85rem;
       display: flex;
       flex-direction: column;
-      gap: 8px;
+      gap: 10px;
     }
 
     .ai-msg {
       background: rgba(255, 255, 255, 0.05);
-      padding: 8px;
-      border-radius: 6px;
+      padding: 10px;
+      border-radius: 8px;
+      line-height: 1.4;
     }
 
     .ai-input {
@@ -322,7 +317,7 @@
       flex: 1;
       background: transparent;
       border: none;
-      padding: 8px;
+      padding: 10px;
       color: #fff;
       outline: none;
     }
@@ -330,7 +325,7 @@
     .ai-input button {
       background: var(--primary-cyan);
       border: none;
-      padding: 8px 12px;
+      padding: 10px 15px;
       color: #000;
       font-weight: bold;
       cursor: pointer;
@@ -339,7 +334,7 @@
 </head>
 <body>
 
-  <!-- TAHAP 1: NODEREN LOGIN OVERLAY -->
+  <!-- LOGIN OVERLAY -->
   <div id="loginOverlay">
     <div class="login-box">
       <h2>GHIRP STORE</h2>
@@ -358,7 +353,7 @@
     </div>
   </div>
 
-  <!-- TAHAP 2: ETALASE TOKO -->
+  <!-- MAIN CONTENT -->
   <div id="mainContent">
     
     <header>
@@ -369,7 +364,7 @@
       <div class="user-tag" id="userBadge">UCP: Guest</div>
     </header>
 
-    <!-- GTA SA Radio Stream Bar -->
+    <!-- Radio Bar -->
     <div class="radio-bar">
       <div class="radio-info">
         <div class="radio-pulse"></div>
@@ -503,26 +498,26 @@
 
   </div>
 
-  <!-- FLOATING CART & AI WIDGET -->
+  <!-- FLOATING CART & AI -->
   <div class="floating-cart" onclick="checkoutWA()">
     🛒 Keranjang (<span id="cartCount">0</span>) - Checkout
   </div>
 
   <div style="position: fixed; bottom: 20px; left: 20px; background: rgba(0,240,255,0.1); border: 1px solid var(--primary-cyan); padding: 10px 18px; border-radius: 30px; color: var(--primary-cyan); cursor: pointer; font-size: 0.85rem; z-index: 1000;" onclick="toggleAI()">
-    🤖 AI Support
+    🤖 GHIRP AI Pro
   </div>
 
   <!-- AI DRAWER -->
   <div id="aiAssistant">
     <div class="ai-header">
-      <span>🤖 GHIRP AI Support</span>
+      <span>🤖 GHIRP AI Assistant Pro</span>
       <span style="cursor: pointer;" onclick="toggleAI()">✕</span>
     </div>
     <div class="ai-logs" id="aiLogs">
-      <div class="ai-msg">Halo! Ada yang bisa saya bantu tentang paket donasi/house?</div>
+      <div class="ai-msg">Halo! Saya GHIRP AI Assistant Pro. Ada yang bisa saya bantu terkait info paket donasi, fitur rumah, atau pertanyaan santai lainnya? 😊</div>
     </div>
     <div class="ai-input">
-      <input type="text" id="aiQuery" placeholder="Tanyakan sesuatu..." onkeypress="if(event.key==='Enter') askAI()">
+      <input type="text" id="aiQuery" placeholder="Ketik pertanyaan..." onkeypress="if(event.key==='Enter') askAI()">
       <button onclick="askAI()">Kirim</button>
     </div>
   </div>
@@ -531,7 +526,6 @@
     let userData = { ucp: '', char: '' };
     let cart = [];
 
-    // FUNGSI LOGIN UTAMA (LANGSUNG MEMBUKA ETALASE)
     function doLogin() {
       const ucpVal = document.getElementById('ucpInput').value.trim();
       const charVal = document.getElementById('charInput').value.trim();
@@ -546,15 +540,12 @@
 
       document.getElementById('userBadge').innerText = `UCP: ${userData.ucp} | IC: ${userData.char}`;
 
-      // Sembunyikan layar login
       const overlay = document.getElementById('loginOverlay');
       overlay.style.opacity = '0';
       overlay.style.visibility = 'hidden';
 
-      // Tampilkan etalase
       document.getElementById('mainContent').style.display = 'block';
 
-      // Putar musik jika bisa
       const radio = document.getElementById('gtaRadio');
       if (radio) {
         radio.play().catch(() => console.log("Autoplay blocked"));
@@ -573,7 +564,7 @@
         return;
       }
 
-      let adminWA = "+6282345861313"; // Nomor WA Admin
+      let adminWA = "6283867408936";
       let total = 0;
       let itemList = "";
 
@@ -598,26 +589,71 @@
       drawer.style.display = (drawer.style.display === 'flex') ? 'none' : 'flex';
     }
 
+    /* KECERDASAN AI DENGAN RESPON SANTAI, SALAM, & TOPIK SERVER */
     function askAI() {
       const input = document.getElementById('aiQuery');
       const query = input.value.trim().toLowerCase();
       if (!query) return;
 
       const logs = document.getElementById('aiLogs');
-      logs.innerHTML += `<div class="ai-msg" style="text-align:right;">${input.value}</div>`;
+      logs.innerHTML += `<div class="ai-msg" style="text-align:right; background:rgba(112,0,255,0.2);">${input.value}</div>`;
       input.value = '';
 
-      let reply = "Saya belum mengerti. Tanyakan seputar 'mansion', 'sultan', atau 'cara beli'.";
-      if (query.includes('mansion')) {
-        reply = "Mansion Rp 100.000 memiliki brankas Unlimited, Gate, Helipad, & opsi kunci 3 teman.";
-      } else if (query.includes('sultan')) {
-        reply = "Paket Sultan Rp 150.000 mencakup Super GT, Rumah Kontemporer, VIP 30H, Level +10, & $20.000.";
-      } else if (query.includes('beli') || query.includes('cara')) {
-        reply = "Klik '+ Tambah Pesanan' pada paket, lalu klik Keranjang di kanan bawah untuk pesan via WA.";
+      let reply = "";
+
+      // 1. SALAM & KABAR
+      if (query.includes('assalamualaikum') || query.includes('ass') || query.includes('askum') || query.includes('assalamu\'alaikum')) {
+        reply = "Wa\'alaikumsalam Warahmatullahi Wabarakatuh! Selamat datang di GHIRP Store. Ada yang bisa AI bantu hari ini, kawan?";
+      } else if (query.includes('halo') || query.includes('hi') || query.includes('p') || query.includes('min') || query.includes('tes')) {
+        reply = "Halo juga! Selamat datang. Jangan lupa istirahat dan minum air putih di sela-sela roleplay ya! 😁";
+      } else if (query.includes('apa kabar') || query.includes('kabarmu') || query.includes('bagaimana kabar')) {
+        reply = "Alhamdulillah server lancar, AI selalu siap 24/7 melayani kamu! Kamu sendiri gimana kabarnya hari ini? Semoga selalu sehat dan banyak rejeki IC & OOC ya! 🤲";
+      } 
+      
+      // 2. SANTAI & HIBURAN
+      else if (query.includes('jokes') || query.includes('lucu') || query.includes('lawak') || query.includes('candaan')) {
+        const jokes = [
+          "Kenapa mobil Elegy di San Andreas ga pernah nangis? Soalnya dia punya 'Steering' yang kuat, bukan 'Heart' yang rapuh! 🚗💨",
+          "Kenapa player RP suka nongkrong di Mechanic Center? Karena cuma di sana 'hati yang patah' ga bisa direpair, tapi bemper hancur bisa! 😂",
+          "Mobil apa yang paling sopan? Mobil 'Sultan', soalnya kalau mau lewat selalu permisi sama uang tabungan! 💸"
+        ];
+        reply = jokes[Math.floor(Math.random() * jokes.length)];
+      } else if (query.includes('laper') || query.includes('makan') || query.includes('rekomendasi makan')) {
+        reply = "Kalo karakter IC kamu laper, buruan ke Cluckin' Bell atau Well Stacked Pizza terdekat! Kalo kamu (OOC) yang laper, mending pesan mie instan pakai telur biar makin nikmat pas main RP. 🍜";
+      } else if (query.includes('ngantuk') || query.includes('capek') || query.includes('pusing')) {
+        reply = "Kalau udah ngantuk/capek, mending /q dulu sebentar buat rebahan atau tidur kawan. Kesehatanmu di dunia nyata jauh lebih berharga daripada grinding gaji IC! 😴💤";
+      } else if (query.includes('bosen') || query.includes('bosan') || query.includes('ngapain')) {
+        reply = "Bosan? Coba deh ikutan event balap liar di Los Santos, nongkrong santai di Pier sama temen faction, atau jalan-jalan keliling desa naik Sanchez bareng sahabat! 🏍️🌄";
+      }
+
+      // 3. TOPIK PAKET DONASI & RUMAH
+      else if (query.includes('mansion')) {
+        reply = "<b>🏡 Mansion Package (Rp 100.000):</b><br>- Brankas: UNLIMITED<br>- Fitur: Free Gate, Private Garage & Helipad<br>- Fitur Tambahan: Bisa membagikan kunci rumah ke 3 teman (0/3), Weapon Chest, Lemari Pakaian & Musik House.";
+      } else if (query.includes('sultan') && !query.includes('real')) {
+        reply = "<b>🏎️ Paket Sultan (Rp 150.000):</b><br>- Rumah: Kontemporer<br>- Kendaraan: Super GT<br>- Benefit: VIP 30 Hari, Level +10, dan Uang IC $20.000.";
+      } else if (query.includes('real sultan') || query.includes('realsultan')) {
+        reply = "<b>👑 Paket Real Sultan (Rp 200.000):</b><br>- Rumah: High Class<br>- Kendaraan: Turismo<br>- Benefit: VIP 30 Hari, Role Khusus Discord, Level +15, dan Uang IC $30.000.";
+      } else if (query.includes('standar') || query.includes('standard')) {
+        reply = "<b>📦 Pilihan Paket Standar:</b><br>1. <b>Paket Donasi Standart (100K):</b> Rumah Small, Elegy, VIP 30H, Level +5, $10.000.<br>2. <b>House Standar (25K):</b> Brankas 450KG, Lemari, Weapon Chest, Private Garage.";
+      } else if (query.includes('brankas') || query.includes('kapasitas')) {
+        reply = "<b>📦 Kapasitas Brankas Rumah:</b><br>- House Standar: 450KG<br>- House Medium: 500KG<br>- House High: 700KG<br>- Mansion: <b>UNLIMITED (Tanpa Batas)</b>";
+      } else if (query.includes('mobil') || query.includes('kendaraan')) {
+        reply = "<b>🚗 Kendaraan Paket Donasi:</b><br>- Paket Standart: <b>Elegy</b><br>- Paket Sultan: <b>Super GT</b><br>- Paket Real Sultan: <b>Turismo</b>";
+      } else if (query.includes('cara beli') || query.includes('bayar') || query.includes('checkout') || query.includes('pesan')) {
+        reply = "<b>🛒 Cara Melakukan Pembelian:</b><br>1. Klik tombol <b>+ Tambah Pesanan</b>.<br>2. Klik tombol <b>Keranjang</b> di kanan bawah.<br>3. Kirim pesan otomatis yang telah terformat ke WhatsApp Admin.";
+      } else if (query.includes('bug') || query.includes('error') || query.includes('masalah')) {
+        reply = "<b>🔧 Bantuan Masalah Teknis/Script:</b><br>Jika menemukan bug/error saat bermain, segera laporkan ke Admin via Discord Server agar langsung ditangani ya!";
+      } else if (query.includes('vip')) {
+        reply = "<b>⭐ Fitur VIP 30 Hari:</b><br>Diberikan otomatis dalam Paket Standart, Sultan, dan Real Sultan untuk mendapatkan akses perintah khusus dan bonus ekonomi.";
+      } 
+      
+      // JAWABAN DEFAULT
+      else {
+        reply = "Saya kurang mengerti maksudnya nih 😁 Coba tanya hal santai seperti <i>'Assalamualaikum'</i>, <i>'Jokes'</i>, <i>'Bosan'</i>, atau topik donasi seperti <i>'Mansion'</i>, <i>'Sultan'</i>, dan <i>'Cara beli'</i>.";
       }
 
       setTimeout(() => {
-        logs.innerHTML += `<div class="ai-msg" style="color:var(--primary-cyan);">${reply}</div>`;
+        logs.innerHTML += `<div class="ai-msg" style="color:var(--primary-cyan); border-left:2px solid var(--primary-cyan);">${reply}</div>`;
         logs.scrollTop = logs.scrollHeight;
       }, 400);
     }
