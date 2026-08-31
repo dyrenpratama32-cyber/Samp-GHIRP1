@@ -587,19 +587,35 @@
     }
 
     function checkoutWA() {
-      if (cart.length === 0) {
-        alert("Keranjang belanja Anda masih kosong!");
-        return;
-      }
+  if (cart.length === 0) {
+    alert("Keranjang belanja Anda masih kosong!");
+    return;
+  }
 
-      let adminWA = "6281234567890"; // Ganti dengan Nomor WA Admin
-      let total = 0;
-      let itemList = "";
+  // Gunakan format angka murni (tanpa tanda +, spasi, atau strip)
+  let adminWA = "+62 823-4586-1313"; 
+  let total = 0;
+  let itemList = "";
 
-      cart.forEach((c, index) => {
-        itemList += `${index + 1}. ${c.item} - Rp ${c.price.toLocaleString('id-ID')}%0A`;
-        total += c.price;
-      });
+  cart.forEach((c, index) => {
+    itemList += `${index + 1}. ${c.item} - Rp ${c.price.toLocaleString('id-ID')}\n`;
+    total += c.price;
+  });
+
+  // Susun teks pesan secara rapi
+  let text = `*PESANAN BARU - GHIRP STORE*\n\n` +
+             `*Data Player:*\n` +
+             `- UCP: ${userData.ucp}\n` +
+             `- IC: ${userData.char}\n\n` +
+             `*Daftar Belanja:*\n${itemList}\n` +
+             `*Total:* Rp ${total.toLocaleString('id-ID')}`;
+
+  // Encode pesan teks agar format baris baru (\n) terbaca sempurna di WhatsApp
+  let encodedText = encodeURIComponent(text);
+
+  // Buka WhatsApp Web / Aplikasi
+  window.open(`https://wa.me/${adminWA}?text=${encodedText}`, '_blank');
+}
 
       let text = `*PESANAN BARU - GHIRP STORE*%0A%0A` +
                  `*Data Player:*%0A- UCP: ${userData.ucp}%0A- IC: ${userData.char}%0A%0A` +
