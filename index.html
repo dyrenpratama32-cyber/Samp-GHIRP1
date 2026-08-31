@@ -492,19 +492,19 @@
     </header>
 
     <!-- Radio Bar -->
-<div class="radio-bar">
-  <div class="radio-info">
-    <div class="radio-pulse"></div>
-    <div>
-      <strong style="font-size: 0.9rem; color: #fff;">GTA SA Radio - Bounce FM</strong>
-      <p id="radioStatus" style="font-size: 0.75rem; color: var(--text-muted);">Atmospheric Audio Enabled</p>
+    <div class="radio-bar">
+      <div class="radio-info">
+        <div class="radio-pulse"></div>
+        <div>
+          <strong style="font-size: 0.9rem; color: #fff;">GTA SA Radio - Bounce FM</strong>
+          <p id="radioStatus" style="font-size: 0.75rem; color: var(--text-muted);">Atmospheric Audio Enabled</p>
+        </div>
+      </div>
+      <audio id="gtaRadio" controls preload="auto" style="height: 30px; width: 200px;">
+        <source src="https://stream.zeno.fm/f3wvbb1ch3quv" type="audio/mpeg">
+        Browser Anda tidak mendukung pemutar audio.
+      </audio>
     </div>
-  </div>
-  <audio id="gtaRadio" controls preload="auto" style="height: 30px; width: 200px;">
-    <source src="https://stream.zeno.fm/f3wvbb1ch3quv" type="audio/mpeg">
-    Browser Anda tidak mendukung pemutar audio.
-  </audio>
-</div>
 
     <!-- Paket Donation GHIRP -->
     <div class="section-title">🎁 PAKET DONATION GHIRP</div>
@@ -691,7 +691,7 @@
   <script>
     let userData = { ucp: '', char: '' };
     let cart = [];
-    let discountRate = 0; // Diskon (misal: 0.1 = 10%)
+    let discountRate = 0;
     let appliedCouponCode = "";
 
     function doLogin() {
@@ -714,9 +714,17 @@
 
       document.getElementById('mainContent').style.display = 'block';
 
+      // AUTO-PLAY RADIO DENGAN RESPON KANAN-KIRI
       const radio = document.getElementById('gtaRadio');
+      const radioStatus = document.getElementById('radioStatus');
+
       if (radio) {
-        radio.play().catch(() => console.log("Autoplay blocked"));
+        radio.play().then(() => {
+          if (radioStatus) radioStatus.innerText = "Playing Live Stream";
+        }).catch((err) => {
+          console.log("Autoplay terhalang:", err);
+          if (radioStatus) radioStatus.innerText = "Klik Play di bawah untuk memutar";
+        });
       }
     }
 
@@ -739,14 +747,12 @@
       document.getElementById('cartModal').style.display = 'none';
     }
 
-    // FITUR HAPUS SATUAN BARANG
     function removeFromCart(index) {
       cart.splice(index, 1);
       updateCartCount();
       renderCart();
     }
 
-    // FITUR BATAL / KOSONGKAN KERANJANG
     function clearCart() {
       if (cart.length === 0) return;
       if (confirm("Apakah Anda yakin ingin membatalkan pilihan dan mengosongkan keranjang?")) {
@@ -758,11 +764,10 @@
       }
     }
 
-    // FITUR KODE DISKON BARU: GHIRP334
     function applyCoupon() {
       const code = document.getElementById('couponInput').value.trim().toUpperCase();
       if (code === "GHIRP334") {
-        discountRate = 0.10; // Diskon 10%
+        discountRate = 0.10;
         appliedCouponCode = code;
         alert("Selamat! Kode promo GHIRP334 berhasil dipasang. Anda mendapatkan diskon 10%!");
       } else if (code === "") {
@@ -809,7 +814,7 @@
         return;
       }
 
-      let adminWA = "+6283867408936";
+      let adminWA = "6283867408936";
       let subtotal = 0;
       let itemList = "";
 
