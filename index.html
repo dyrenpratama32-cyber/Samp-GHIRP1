@@ -492,18 +492,19 @@
     </header>
 
     <!-- Radio Bar -->
-    <div class="radio-bar">
-      <div class="radio-info">
-        <div class="radio-pulse"></div>
-        <div>
-          <strong style="font-size: 0.9rem; color: #fff;">GTA SA Radio - Bounce FM</strong>
-          <p style="font-size: 0.75rem; color: var(--text-muted);">Atmospheric Audio Enabled</p>
-        </div>
-      </div>
-      <audio id="gtaRadio" controls style="height: 30px; width: 200px;">
-        <source src="https://stream.zeno.fm/f3wvbb1ch3quv" type="audio/mpeg">
-      </audio>
+<div class="radio-bar">
+  <div class="radio-info">
+    <div class="radio-pulse"></div>
+    <div>
+      <strong style="font-size: 0.9rem; color: #fff;">GTA SA Radio - Bounce FM</strong>
+      <p id="radioStatus" style="font-size: 0.75rem; color: var(--text-muted);">Atmospheric Audio Enabled</p>
     </div>
+  </div>
+  <audio id="gtaRadio" controls preload="auto" style="height: 30px; width: 200px;">
+    <source src="https://stream.zeno.fm/f3wvbb1ch3quv" type="audio/mpeg">
+    Browser Anda tidak mendukung pemutar audio.
+  </audio>
+</div>
 
     <!-- Paket Donation GHIRP -->
     <div class="section-title">🎁 PAKET DONATION GHIRP</div>
