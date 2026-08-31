@@ -12,6 +12,7 @@
       --primary-cyan: #00f0ff;
       --primary-purple: #7000ff;
       --accent-green: #00ff66;
+      --accent-red: #ff4757;
       --text-main: #f1f5f9;
       --text-muted: #94a3b8;
     }
@@ -33,7 +34,7 @@
       overflow-x: hidden;
     }
 
-    /* TAHAP 1: NODEREN LOGIN OVERLAY */
+    /* LOGIN OVERLAY */
     #loginOverlay {
       position: fixed;
       top: 0;
@@ -122,7 +123,7 @@
       margin-top: 10px;
     }
 
-    /* TAHAP 2: ETALASE TOKO */
+    /* MAIN CONTENT */
     #mainContent {
       display: none;
       padding: 20px;
@@ -250,7 +251,7 @@
       color: #000;
     }
 
-    /* FLOATING CART & AI WIDGET */
+    /* FLOATING CART BUTTON & MODAL */
     .floating-cart {
       position: fixed;
       bottom: 20px;
@@ -265,6 +266,132 @@
       z-index: 1000;
     }
 
+    /* CART MODAL */
+    #cartModal {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(9, 13, 22, 0.9);
+      backdrop-filter: blur(10px);
+      display: none;
+      justify-content: center;
+      align-items: center;
+      z-index: 9999;
+      padding: 20px;
+    }
+
+    .cart-box {
+      background: var(--card-bg);
+      border: 1px solid var(--primary-cyan);
+      border-radius: 16px;
+      padding: 25px;
+      width: 100%;
+      max-width: 480px;
+      box-shadow: 0 0 30px rgba(0, 240, 255, 0.3);
+    }
+
+    .cart-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+      padding-bottom: 12px;
+      margin-bottom: 15px;
+    }
+
+    .cart-header h3 {
+      color: var(--primary-cyan);
+    }
+
+    .cart-items {
+      max-height: 200px;
+      overflow-y: auto;
+      margin-bottom: 15px;
+    }
+
+    .cart-item {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 10px;
+      background: rgba(15, 23, 42, 0.6);
+      border-radius: 8px;
+      margin-bottom: 8px;
+      font-size: 0.9rem;
+    }
+
+    .btn-delete {
+      background: rgba(255, 71, 87, 0.2);
+      border: 1px solid var(--accent-red);
+      color: var(--accent-red);
+      padding: 4px 8px;
+      border-radius: 4px;
+      cursor: pointer;
+      font-size: 0.75rem;
+    }
+
+    .coupon-box {
+      display: flex;
+      gap: 10px;
+      margin-bottom: 15px;
+    }
+
+    .coupon-box input {
+      flex: 1;
+      padding: 8px 12px;
+      background: rgba(15, 23, 42, 0.9);
+      border: 1px solid rgba(0, 240, 255, 0.3);
+      border-radius: 6px;
+      color: #fff;
+    }
+
+    .coupon-box button {
+      padding: 8px 12px;
+      background: var(--primary-cyan);
+      border: none;
+      border-radius: 6px;
+      color: #000;
+      font-weight: bold;
+      cursor: pointer;
+    }
+
+    .cart-summary {
+      font-size: 0.95rem;
+      margin-bottom: 15px;
+      border-top: 1px dashed rgba(255,255,255,0.2);
+      padding-top: 10px;
+    }
+
+    .cart-actions {
+      display: flex;
+      gap: 10px;
+    }
+
+    .btn-checkout {
+      flex: 2;
+      padding: 12px;
+      background: linear-gradient(90deg, var(--primary-purple), var(--primary-cyan));
+      border: none;
+      border-radius: 8px;
+      color: #fff;
+      font-weight: bold;
+      cursor: pointer;
+    }
+
+    .btn-clear {
+      flex: 1;
+      padding: 12px;
+      background: rgba(255, 71, 87, 0.2);
+      border: 1px solid var(--accent-red);
+      color: var(--accent-red);
+      border-radius: 8px;
+      font-weight: bold;
+      cursor: pointer;
+    }
+
+    /* AI WIDGET */
     #aiAssistant {
       position: fixed;
       bottom: 80px;
@@ -498,23 +625,61 @@
 
   </div>
 
-  <!-- FLOATING CART & AI -->
-  <div class="floating-cart" onclick="checkoutWA()">
-    🛒 Keranjang (<span id="cartCount">0</span>) - Checkout
+  <!-- FLOATING BUTTON & MODAL KERANJANG -->
+  <div class="floating-cart" onclick="openCart()">
+    🛒 Keranjang (<span id="cartCount">0</span>)
   </div>
 
+  <div id="cartModal">
+    <div class="cart-box">
+      <div class="cart-header">
+        <h3>🛒 Keranjang Belanja Anda</h3>
+        <span style="cursor: pointer; font-weight: bold; color: var(--text-muted);" onclick="closeCart()">✕</span>
+      </div>
+
+      <div class="cart-items" id="cartList">
+        <!-- Item Keranjang di-render via JS -->
+      </div>
+
+      <div class="coupon-box">
+        <input type="text" id="couponInput" placeholder="Kode Promo (Gunakan: GHIRP334)">
+        <button onclick="applyCoupon()">Gunakan</button>
+      </div>
+
+      <div class="cart-summary">
+        <div style="display: flex; justify-content: space-between; margin-bottom: 5px;">
+          <span>Subtotal:</span>
+          <span id="subtotalText">Rp 0</span>
+        </div>
+        <div style="display: flex; justify-content: space-between; margin-bottom: 5px; color: var(--accent-green);">
+          <span>Diskon (<span id="discountPercent">0%</span>):</span>
+          <span id="discountText">- Rp 0</span>
+        </div>
+        <div style="display: flex; justify-content: space-between; font-weight: bold; font-size: 1.1rem; color: var(--primary-cyan); border-top: 1px solid rgba(255,255,255,0.1); padding-top: 6px;">
+          <span>Total Akhir:</span>
+          <span id="totalText">Rp 0</span>
+        </div>
+      </div>
+
+      <div class="cart-actions">
+        <button class="btn-clear" onclick="clearCart()">Batal / Kosongkan</button>
+        <button class="btn-checkout" onclick="checkoutWA()">Checkout WhatsApp &rarr;</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- AI WIDGET -->
   <div style="position: fixed; bottom: 20px; left: 20px; background: rgba(0,240,255,0.1); border: 1px solid var(--primary-cyan); padding: 10px 18px; border-radius: 30px; color: var(--primary-cyan); cursor: pointer; font-size: 0.85rem; z-index: 1000;" onclick="toggleAI()">
     🤖 GHIRP AI Pro
   </div>
 
-  <!-- AI DRAWER -->
   <div id="aiAssistant">
     <div class="ai-header">
       <span>🤖 GHIRP AI Assistant Pro</span>
       <span style="cursor: pointer;" onclick="toggleAI()">✕</span>
     </div>
     <div class="ai-logs" id="aiLogs">
-      <div class="ai-msg">Halo! Saya GHIRP AI Assistant Pro. Ada yang bisa saya bantu terkait info paket donasi, fitur rumah, atau pertanyaan santai lainnya? 😊</div>
+      <div class="ai-msg">Halo! Saya GHIRP AI Assistant Pro. Gunakan kode diskon <b>GHIRP334</b> untuk dapatkan potongan harga! 😊</div>
     </div>
     <div class="ai-input">
       <input type="text" id="aiQuery" placeholder="Ketik pertanyaan..." onkeypress="if(event.key==='Enter') askAI()">
@@ -525,6 +690,8 @@
   <script>
     let userData = { ucp: '', char: '' };
     let cart = [];
+    let discountRate = 0; // Diskon (misal: 0.1 = 10%)
+    let appliedCouponCode = "";
 
     function doLogin() {
       const ucpVal = document.getElementById('ucpInput').value.trim();
@@ -554,8 +721,85 @@
 
     function addToCart(item, price) {
       cart.push({ item, price });
+      updateCartCount();
+      alert(`${item} berhasil ditambahkan ke keranjang!`);
+    }
+
+    function updateCartCount() {
       document.getElementById('cartCount').innerText = cart.length;
-      alert(`${item} berhasil ditambahkan ke keranjang belanja!`);
+    }
+
+    function openCart() {
+      renderCart();
+      document.getElementById('cartModal').style.display = 'flex';
+    }
+
+    function closeCart() {
+      document.getElementById('cartModal').style.display = 'none';
+    }
+
+    // FITUR HAPUS SATUAN BARANG
+    function removeFromCart(index) {
+      cart.splice(index, 1);
+      updateCartCount();
+      renderCart();
+    }
+
+    // FITUR BATAL / KOSONGKAN KERANJANG
+    function clearCart() {
+      if (cart.length === 0) return;
+      if (confirm("Apakah Anda yakin ingin membatalkan pilihan dan mengosongkan keranjang?")) {
+        cart = [];
+        discountRate = 0;
+        appliedCouponCode = "";
+        updateCartCount();
+        renderCart();
+      }
+    }
+
+    // FITUR KODE DISKON BARU: GHIRP334
+    function applyCoupon() {
+      const code = document.getElementById('couponInput').value.trim().toUpperCase();
+      if (code === "GHIRP334") {
+        discountRate = 0.10; // Diskon 10%
+        appliedCouponCode = code;
+        alert("Selamat! Kode promo GHIRP334 berhasil dipasang. Anda mendapatkan diskon 10%!");
+      } else if (code === "") {
+        alert("Harap masukkan kode promo terlebih dahulu!");
+      } else {
+        alert("Kode promo tidak valid! Gunakan kode GHIRP334.");
+      }
+      renderCart();
+    }
+
+    function renderCart() {
+      const cartList = document.getElementById('cartList');
+      cartList.innerHTML = "";
+
+      if (cart.length === 0) {
+        cartList.innerHTML = `<div style="text-align:center; color:var(--text-muted); padding: 20px;">Keranjang Anda kosong</div>`;
+      } else {
+        cart.forEach((c, index) => {
+          cartList.innerHTML += `
+            <div class="cart-item">
+              <div>
+                <strong>${c.item}</strong><br>
+                <small style="color:var(--accent-green);">Rp ${c.price.toLocaleString('id-ID')}</small>
+              </div>
+              <button class="btn-delete" onclick="removeFromCart(${index})">🗑️ Hapus</button>
+            </div>
+          `;
+        });
+      }
+
+      let subtotal = cart.reduce((sum, item) => sum + item.price, 0);
+      let discountAmount = subtotal * discountRate;
+      let total = subtotal - discountAmount;
+
+      document.getElementById('subtotalText').innerText = `Rp ${subtotal.toLocaleString('id-ID')}`;
+      document.getElementById('discountPercent').innerText = `${discountRate * 100}%`;
+      document.getElementById('discountText').innerText = `- Rp ${discountAmount.toLocaleString('id-ID')}`;
+      document.getElementById('totalText').innerText = `Rp ${total.toLocaleString('id-ID')}`;
     }
 
     function checkoutWA() {
@@ -565,20 +809,25 @@
       }
 
       let adminWA = "+6283867408936";
-      let total = 0;
+      let subtotal = 0;
       let itemList = "";
 
       cart.forEach((c, index) => {
         itemList += `${index + 1}. ${c.item} - Rp ${c.price.toLocaleString('id-ID')}\n`;
-        total += c.price;
+        subtotal += c.price;
       });
+
+      let discountAmount = subtotal * discountRate;
+      let total = subtotal - discountAmount;
 
       let text = `*PESANAN BARU - GHIRP STORE*\n\n` +
                  `*Data Player:*\n` +
                  `- UCP: ${userData.ucp}\n` +
                  `- IC: ${userData.char}\n\n` +
                  `*Daftar Belanja:*\n${itemList}\n` +
-                 `*Total:* Rp ${total.toLocaleString('id-ID')}`;
+                 `*Subtotal:* Rp ${subtotal.toLocaleString('id-ID')}\n` +
+                 `*Diskon (${discountRate * 100}%):* - Rp ${discountAmount.toLocaleString('id-ID')} ${appliedCouponCode ? `(Kode: ${appliedCouponCode})` : ''}\n` +
+                 `*Total Akhir:* Rp ${total.toLocaleString('id-ID')}`;
 
       let encodedText = encodeURIComponent(text);
       window.open(`https://wa.me/${adminWA}?text=${encodedText}`, '_blank');
@@ -589,7 +838,6 @@
       drawer.style.display = (drawer.style.display === 'flex') ? 'none' : 'flex';
     }
 
-    /* KECERDASAN AI DENGAN RESPON SANTAI, SALAM, & TOPIK SERVER */
     function askAI() {
       const input = document.getElementById('aiQuery');
       const query = input.value.trim().toLowerCase();
@@ -601,55 +849,24 @@
 
       let reply = "";
 
-      // 1. SALAM & KABAR
-      if (query.includes('assalamualaikum') || query.includes('ass') || query.includes('askum') || query.includes('assalamu\'alaikum')) {
+      if (query.includes('diskon') || query.includes('promo') || query.includes('kupon') || query.includes('kode')) {
+        reply = "<b>🎉 Kode Promo Terbaru!</b><br>Gunakan kode promo <b>GHIRP334</b> saat checkout di keranjang untuk mendapatkan diskon sebesar 10%!";
+      } else if (query.includes('assalamualaikum') || query.includes('ass') || query.includes('askum')) {
         reply = "Wa\'alaikumsalam Warahmatullahi Wabarakatuh! Selamat datang di GHIRP Store. Ada yang bisa AI bantu hari ini, kawan?";
-      } else if (query.includes('halo') || query.includes('hi') || query.includes('p') || query.includes('min') || query.includes('tes')) {
-        reply = "Halo juga! Selamat datang. Jangan lupa istirahat dan minum air putih di sela-sela roleplay ya! 😁";
-      } else if (query.includes('apa kabar') || query.includes('kabarmu') || query.includes('bagaimana kabar')) {
-        reply = "Alhamdulillah server lancar, AI selalu siap 24/7 melayani kamu! Kamu sendiri gimana kabarnya hari ini? Semoga selalu sehat dan banyak rejeki IC & OOC ya! 🤲";
-      } 
-      
-      // 2. SANTAI & HIBURAN
-      else if (query.includes('jokes') || query.includes('lucu') || query.includes('lawak') || query.includes('candaan')) {
-        const jokes = [
-          "Kenapa mobil Elegy di San Andreas ga pernah nangis? Soalnya dia punya 'Steering' yang kuat, bukan 'Heart' yang rapuh! 🚗💨",
-          "Kenapa player RP suka nongkrong di Mechanic Center? Karena cuma di sana 'hati yang patah' ga bisa direpair, tapi bemper hancur bisa! 😂",
-          "Mobil apa yang paling sopan? Mobil 'Sultan', soalnya kalau mau lewat selalu permisi sama uang tabungan! 💸"
-        ];
-        reply = jokes[Math.floor(Math.random() * jokes.length)];
-      } else if (query.includes('laper') || query.includes('makan') || query.includes('rekomendasi makan')) {
-        reply = "Kalo karakter IC kamu laper, buruan ke Cluckin' Bell atau Well Stacked Pizza terdekat! Kalo kamu (OOC) yang laper, mending pesan mie instan pakai telur biar makin nikmat pas main RP. 🍜";
-      } else if (query.includes('ngantuk') || query.includes('capek') || query.includes('pusing')) {
-        reply = "Kalau udah ngantuk/capek, mending /q dulu sebentar buat rebahan atau tidur kawan. Kesehatanmu di dunia nyata jauh lebih berharga daripada grinding gaji IC! 😴💤";
-      } else if (query.includes('bosen') || query.includes('bosan') || query.includes('ngapain')) {
-        reply = "Bosan? Coba deh ikutan event balap liar di Los Santos, nongkrong santai di Pier sama temen faction, atau jalan-jalan keliling desa naik Sanchez bareng sahabat! 🏍️🌄";
-      }
-
-      // 3. TOPIK PAKET DONASI & RUMAH
-      else if (query.includes('mansion')) {
-        reply = "<b>🏡 Mansion Package (Rp 100.000):</b><br>- Brankas: UNLIMITED<br>- Fitur: Free Gate, Private Garage & Helipad<br>- Fitur Tambahan: Bisa membagikan kunci rumah ke 3 teman (0/3), Weapon Chest, Lemari Pakaian & Musik House.";
+      } else if (query.includes('halo') || query.includes('hi') || query.includes('p') || query.includes('min')) {
+        reply = "Halo juga! Selamat datang. Jangan lupa pakai kode diskon <b>GHIRP334</b> ya! 😁";
+      } else if (query.includes('jokes') || query.includes('lucu') || query.includes('lawak')) {
+        reply = "Kenapa mobil Elegy di San Andreas ga pernah nangis? Soalnya dia punya 'Steering' yang kuat, bukan 'Heart' yang rapuh! 🚗💨";
+      } else if (query.includes('mansion')) {
+        reply = "<b>🏡 Mansion Package (Rp 100.000):</b><br>- Brankas: UNLIMITED<br>- Fitur: Free Gate, Private Garage & Helipad, Bagi Kunci 0/3, Weapon Chest, Lemari, dan Musik.";
       } else if (query.includes('sultan') && !query.includes('real')) {
-        reply = "<b>🏎️ Paket Sultan (Rp 150.000):</b><br>- Rumah: Kontemporer<br>- Kendaraan: Super GT<br>- Benefit: VIP 30 Hari, Level +10, dan Uang IC $20.000.";
-      } else if (query.includes('real sultan') || query.includes('realsultan')) {
-        reply = "<b>👑 Paket Real Sultan (Rp 200.000):</b><br>- Rumah: High Class<br>- Kendaraan: Turismo<br>- Benefit: VIP 30 Hari, Role Khusus Discord, Level +15, dan Uang IC $30.000.";
-      } else if (query.includes('standar') || query.includes('standard')) {
-        reply = "<b>📦 Pilihan Paket Standar:</b><br>1. <b>Paket Donasi Standart (100K):</b> Rumah Small, Elegy, VIP 30H, Level +5, $10.000.<br>2. <b>House Standar (25K):</b> Brankas 450KG, Lemari, Weapon Chest, Private Garage.";
-      } else if (query.includes('brankas') || query.includes('kapasitas')) {
-        reply = "<b>📦 Kapasitas Brankas Rumah:</b><br>- House Standar: 450KG<br>- House Medium: 500KG<br>- House High: 700KG<br>- Mansion: <b>UNLIMITED (Tanpa Batas)</b>";
-      } else if (query.includes('mobil') || query.includes('kendaraan')) {
-        reply = "<b>🚗 Kendaraan Paket Donasi:</b><br>- Paket Standart: <b>Elegy</b><br>- Paket Sultan: <b>Super GT</b><br>- Paket Real Sultan: <b>Turismo</b>";
-      } else if (query.includes('cara beli') || query.includes('bayar') || query.includes('checkout') || query.includes('pesan')) {
-        reply = "<b>🛒 Cara Melakukan Pembelian:</b><br>1. Klik tombol <b>+ Tambah Pesanan</b>.<br>2. Klik tombol <b>Keranjang</b> di kanan bawah.<br>3. Kirim pesan otomatis yang telah terformat ke WhatsApp Admin.";
-      } else if (query.includes('bug') || query.includes('error') || query.includes('masalah')) {
-        reply = "<b>🔧 Bantuan Masalah Teknis/Script:</b><br>Jika menemukan bug/error saat bermain, segera laporkan ke Admin via Discord Server agar langsung ditangani ya!";
-      } else if (query.includes('vip')) {
-        reply = "<b>⭐ Fitur VIP 30 Hari:</b><br>Diberikan otomatis dalam Paket Standart, Sultan, dan Real Sultan untuk mendapatkan akses perintah khusus dan bonus ekonomi.";
-      } 
-      
-      // JAWABAN DEFAULT
-      else {
-        reply = "Saya kurang mengerti maksudnya nih 😁 Coba tanya hal santai seperti <i>'Assalamualaikum'</i>, <i>'Jokes'</i>, <i>'Bosan'</i>, atau topik donasi seperti <i>'Mansion'</i>, <i>'Sultan'</i>, dan <i>'Cara beli'</i>.";
+        reply = "<b>🏎️ Paket Sultan (Rp 150.000):</b><br>- Rumah: Kontemporer | Mobil: Super GT | Benefit: VIP 30 Hari, Level +10, Uang IC $20.000.";
+      } else if (query.includes('real sultan')) {
+        reply = "<b>👑 Paket Real Sultan (Rp 200.000):</b><br>- Rumah: High Class | Mobil: Turismo | Benefit: VIP 30 Hari, Role Discord, Level +15, Uang IC $30.000.";
+      } else if (query.includes('cara beli') || query.includes('checkout')) {
+        reply = "<b>🛒 Cara Beli:</b><br>1. Pilih barang -> 2. Klik Keranjang -> 3. Masukkan kode diskon <b>GHIRP334</b> -> 4. Klik Checkout WhatsApp.";
+      } else {
+        reply = "Ada yang bisa saya bantu? Ketik <i>'Diskon'</i>, <i>'Mansion'</i>, <i>'Sultan'</i>, atau <i>'Jokes'</i>.";
       }
 
       setTimeout(() => {
