@@ -3,12 +3,12 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>GHIRP Store - Cyberpunk Edition</title>
+  <title>GHIRP Store - Official Roleplay Shop</title>
   
   <style>
     :root {
       --bg-dark: #090d16;
-      --card-bg: rgba(22, 30, 46, 0.7);
+      --card-bg: rgba(22, 30, 46, 0.85);
       --primary-cyan: #00f0ff;
       --primary-purple: #7000ff;
       --accent-green: #00ff66;
@@ -20,92 +20,92 @@
       box-sizing: border-box;
       margin: 0;
       padding: 0;
-      font-family: 'Rajdhani', 'Segoe UI', sans-serif;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     }
 
     body {
       background-color: var(--bg-dark);
       background-image: 
-        radial-gradient(at 0% 0%, rgba(112, 0, 255, 0.15) 0px, transparent 50%),
-        radial-gradient(at 100% 100%, rgba(0, 240, 255, 0.15) 0px, transparent 50%);
+        radial-gradient(at 0% 0%, rgba(112, 0, 255, 0.2) 0px, transparent 50%),
+        radial-gradient(at 100% 100%, rgba(0, 240, 255, 0.2) 0px, transparent 50%);
       color: var(--text-main);
       min-height: 100vh;
       overflow-x: hidden;
     }
 
     /* =========================================
-       TAHAP 1: MODERN LOGIN OVERLAY (NODEREN)
+       TAHAP 1: MODERN LOGIN OVERLAY (FIXED)
        ========================================= */
     #loginOverlay {
       position: fixed;
       top: 0;
       left: 0;
-      width: 100vw;
-      height: 100vh;
+      width: 100%;
+      height: 100%;
       background: rgba(9, 13, 22, 0.95);
       backdrop-filter: blur(15px);
       display: flex;
       justify-content: center;
       align-items: center;
-      z-index: 9999;
-      transition: opacity 0.6s ease, visibility 0.6s;
+      z-index: 99999;
+      padding: 20px;
+      transition: opacity 0.5s ease, visibility 0.5s ease;
     }
 
     .login-box {
       background: var(--card-bg);
-      border: 1px solid rgba(0, 240, 255, 0.3);
-      box-shadow: 0 0 30px rgba(0, 240, 255, 0.2);
+      border: 1px solid rgba(0, 240, 255, 0.4);
+      box-shadow: 0 0 35px rgba(0, 240, 255, 0.25);
       border-radius: 16px;
-      padding: 40px;
+      padding: 35px 25px;
       width: 100%;
-      max-width: 420px;
+      max-width: 400px;
       text-align: center;
-      position: relative;
     }
 
     .login-box h2 {
-      font-size: 2rem;
+      font-size: 1.8rem;
       letter-spacing: 2px;
       color: var(--primary-cyan);
       text-transform: uppercase;
-      margin-bottom: 5px;
+      margin-bottom: 6px;
       text-shadow: 0 0 10px rgba(0, 240, 255, 0.5);
     }
 
     .login-box p {
       color: var(--text-muted);
-      font-size: 0.9rem;
-      margin-bottom: 30px;
+      font-size: 0.85rem;
+      margin-bottom: 25px;
     }
 
     .input-group {
-      margin-bottom: 20px;
+      margin-bottom: 18px;
       text-align: left;
     }
 
     .input-group label {
       display: block;
       color: var(--primary-cyan);
-      font-size: 0.85rem;
+      font-size: 0.8rem;
       letter-spacing: 1px;
-      margin-bottom: 8px;
+      margin-bottom: 6px;
+      font-weight: bold;
     }
 
     .input-group input {
       width: 100%;
-      padding: 12px 15px;
-      background: rgba(15, 23, 42, 0.8);
-      border: 1px solid rgba(0, 240, 255, 0.2);
+      padding: 12px;
+      background: rgba(15, 23, 42, 0.9);
+      border: 1px solid rgba(0, 240, 255, 0.3);
       border-radius: 8px;
       color: #fff;
-      font-size: 1rem;
+      font-size: 0.95rem;
       outline: none;
-      transition: 0.3s;
     }
 
     .input-group input:focus {
       border-color: var(--primary-cyan);
-      box-shadow: 0 0 15px rgba(0, 240, 255, 0.3);
+      box-shadow: 0 0 12px rgba(0, 240, 255, 0.4);
     }
 
     .btn-noderen {
@@ -117,16 +117,15 @@
       color: #fff;
       font-weight: bold;
       font-size: 1rem;
-      letter-spacing: 2px;
+      letter-spacing: 1px;
       cursor: pointer;
       text-transform: uppercase;
       box-shadow: 0 0 20px rgba(112, 0, 255, 0.4);
-      transition: 0.3s;
+      margin-top: 10px;
     }
 
-    .btn-noderen:hover {
-      transform: translateY(-2px);
-      box-shadow: 0 0 30px rgba(0, 240, 255, 0.6);
+    .btn-noderen:active {
+      transform: scale(0.98);
     }
 
     /* =========================================
@@ -135,7 +134,7 @@
     #mainContent {
       display: none;
       padding: 20px;
-      max-width: 1200px;
+      max-width: 1100px;
       margin: 0 auto;
     }
 
@@ -145,14 +144,14 @@
       align-items: center;
       padding: 20px 0;
       border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-      margin-bottom: 30px;
+      margin-bottom: 25px;
+      flex-wrap: wrap;
+      gap: 10px;
     }
 
     .brand h1 {
-      font-size: 1.8rem;
-      background: linear-gradient(90deg, var(--primary-cyan), var(--accent-green));
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
+      font-size: 1.6rem;
+      color: var(--primary-cyan);
     }
 
     .user-tag {
@@ -174,12 +173,14 @@
       align-items: center;
       justify-content: space-between;
       margin-bottom: 30px;
+      flex-wrap: wrap;
+      gap: 15px;
     }
 
     .radio-info {
       display: flex;
       align-items: center;
-      gap: 15px;
+      gap: 12px;
     }
 
     .radio-pulse {
@@ -188,58 +189,42 @@
       background-color: var(--accent-green);
       border-radius: 50%;
       box-shadow: 0 0 10px var(--accent-green);
-      animation: pulse 1.5s infinite;
     }
 
-    @keyframes pulse {
-      0% { opacity: 0.3; }
-      50% { opacity: 1; }
-      100% { opacity: 0.3; }
-    }
-
-    /* Section Styling */
+    /* Cards Grid */
     .section-title {
-      font-size: 1.4rem;
+      font-size: 1.3rem;
       color: var(--primary-cyan);
       margin-bottom: 20px;
-      display: flex;
-      align-items: center;
-      gap: 10px;
+      border-bottom: 1px solid var(--primary-cyan);
+      padding-bottom: 5px;
     }
 
     .grid {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
       gap: 20px;
       margin-bottom: 40px;
     }
 
     .card {
       background: var(--card-bg);
-      border: 1px solid rgba(255, 255, 255, 0.08);
+      border: 1px solid rgba(255, 255, 255, 0.1);
       border-radius: 12px;
       padding: 20px;
       display: flex;
       flex-direction: column;
       justify-content: space-between;
-      transition: 0.3s;
-      position: relative;
-    }
-
-    .card:hover {
-      border-color: var(--primary-cyan);
-      box-shadow: 0 0 20px rgba(0, 240, 255, 0.15);
-      transform: translateY(-5px);
     }
 
     .card h3 {
       font-size: 1.2rem;
       color: #fff;
-      margin-bottom: 8px;
+      margin-bottom: 6px;
     }
 
     .price {
-      font-size: 1.3rem;
+      font-size: 1.25rem;
       color: var(--accent-green);
       font-weight: bold;
       margin-bottom: 15px;
@@ -252,8 +237,8 @@
 
     .card ul li {
       color: var(--text-muted);
-      font-size: 0.9rem;
-      padding: 5px 0;
+      font-size: 0.88rem;
+      padding: 4px 0;
       border-bottom: 1px solid rgba(255, 255, 255, 0.05);
     }
 
@@ -265,7 +250,7 @@
       border-radius: 6px;
       font-weight: bold;
       cursor: pointer;
-      transition: 0.3s;
+      width: 100%;
     }
 
     .btn-add:hover {
@@ -285,60 +270,47 @@
       font-weight: bold;
       cursor: pointer;
       box-shadow: 0 0 20px rgba(0, 240, 255, 0.4);
-      z-index: 100;
+      z-index: 1000;
     }
 
-    /* AI Assistant Drawer */
     #aiAssistant {
       position: fixed;
       bottom: 80px;
-      right: 20px;
-      width: 320px;
-      height: 400px;
+      left: 20px;
+      width: 300px;
+      height: 380px;
       background: var(--card-bg);
-      backdrop-filter: blur(20px);
       border: 1px solid var(--primary-cyan);
       border-radius: 12px;
       display: none;
       flex-direction: column;
-      z-index: 101;
+      z-index: 1001;
       overflow: hidden;
-      box-shadow: 0 0 30px rgba(0,0,0,0.5);
     }
 
     .ai-header {
       background: rgba(0, 240, 255, 0.1);
-      padding: 12px;
+      padding: 10px;
       font-weight: bold;
       color: var(--primary-cyan);
-      border-bottom: 1px solid rgba(0, 240, 255, 0.2);
       display: flex;
       justify-content: space-between;
     }
 
     .ai-logs {
       flex: 1;
-      padding: 12px;
+      padding: 10px;
       overflow-y: auto;
       font-size: 0.85rem;
       display: flex;
       flex-direction: column;
-      gap: 10px;
+      gap: 8px;
     }
 
     .ai-msg {
       background: rgba(255, 255, 255, 0.05);
-      padding: 8px 12px;
-      border-radius: 8px;
-    }
-
-    .ai-msg.bot {
-      border-left: 2px solid var(--primary-cyan);
-    }
-
-    .ai-msg.user {
-      border-right: 2px solid var(--primary-purple);
-      text-align: right;
+      padding: 8px;
+      border-radius: 6px;
     }
 
     .ai-input {
@@ -350,7 +322,7 @@
       flex: 1;
       background: transparent;
       border: none;
-      padding: 10px;
+      padding: 8px;
       color: #fff;
       outline: none;
     }
@@ -358,7 +330,7 @@
     .ai-input button {
       background: var(--primary-cyan);
       border: none;
-      padding: 10px 15px;
+      padding: 8px 12px;
       color: #000;
       font-weight: bold;
       cursor: pointer;
@@ -373,21 +345,20 @@
       <h2>GHIRP STORE</h2>
       <p>Akses Portal Donasi & Fitur Roleplay</p>
       
-      <form id="noderenLoginForm" onsubmit="submitLogin(event)">
-        <div class="input-group">
-          <label>NAMA UCP</label>
-          <input type="text" id="ucpInput" placeholder="Masukkan nama UCP..." required>
-        </div>
-        <div class="input-group">
-          <label>NAMA CHARACTER (IC)</label>
-          <input type="text" id="charInput" placeholder="Contoh: Alex_Walker" required>
-        </div>
-        <button type="submit" class="btn-noderen">Lanjutkan Ke Etalase &rarr;</button>
-      </form>
+      <div class="input-group">
+        <label>NAMA UCP</label>
+        <input type="text" id="ucpInput" placeholder="Masukkan nama UCP..." required>
+      </div>
+      <div class="input-group">
+        <label>NAMA CHARACTER (IC)</label>
+        <input type="text" id="charInput" placeholder="Contoh: Alex_Walker" required>
+      </div>
+      
+      <button type="button" class="btn-noderen" onclick="doLogin()">Lanjutkan Ke Etalase &rarr;</button>
     </div>
   </div>
 
-  <!-- TAHAP 2: ETALASE TOKO & TEKNOLOGI AI -->
+  <!-- TAHAP 2: ETALASE TOKO -->
   <div id="mainContent">
     
     <header>
@@ -403,13 +374,12 @@
       <div class="radio-info">
         <div class="radio-pulse"></div>
         <div>
-          <strong style="font-size: 0.9rem; color: #fff;">GTA SA Radio - PlaySF / Bounce FM</strong>
+          <strong style="font-size: 0.9rem; color: #fff;">GTA SA Radio - Bounce FM</strong>
           <p style="font-size: 0.75rem; color: var(--text-muted);">Atmospheric Audio Enabled</p>
         </div>
       </div>
-      <audio id="gtaRadio" controls style="height: 30px; width: 220px;">
+      <audio id="gtaRadio" controls style="height: 30px; width: 200px;">
         <source src="https://stream.zeno.fm/f3wvbb1ch3quv" type="audio/mpeg">
-        Browser Anda tidak mendukung pemutar audio.
       </audio>
     </div>
 
@@ -533,23 +503,23 @@
 
   </div>
 
-  <!-- FLOATING CART & AI ASSISTANT TOGGLES -->
+  <!-- FLOATING CART & AI WIDGET -->
   <div class="floating-cart" onclick="checkoutWA()">
     🛒 Keranjang (<span id="cartCount">0</span>) - Checkout
   </div>
 
-  <div style="position: fixed; bottom: 20px; left: 20px; background: rgba(0,240,255,0.1); border: 1px solid var(--primary-cyan); padding: 10px 18px; border-radius: 30px; color: var(--primary-cyan); cursor: pointer; font-size: 0.85rem;" onclick="toggleAI()">
-    🤖 AI Assistant GHIRP
+  <div style="position: fixed; bottom: 20px; left: 20px; background: rgba(0,240,255,0.1); border: 1px solid var(--primary-cyan); padding: 10px 18px; border-radius: 30px; color: var(--primary-cyan); cursor: pointer; font-size: 0.85rem; z-index: 1000;" onclick="toggleAI()">
+    🤖 AI Support
   </div>
 
-  <!-- AI ASSISTANT DRAWER -->
+  <!-- AI DRAWER -->
   <div id="aiAssistant">
     <div class="ai-header">
       <span>🤖 GHIRP AI Support</span>
       <span style="cursor: pointer;" onclick="toggleAI()">✕</span>
     </div>
     <div class="ai-logs" id="aiLogs">
-      <div class="ai-msg bot">Halo! Saya AI Assistant GHIRP. Ada yang bisa saya bantu terkait fitur rumah atau paket donasi?</div>
+      <div class="ai-msg">Halo! Ada yang bisa saya bantu tentang paket donasi/house?</div>
     </div>
     <div class="ai-input">
       <input type="text" id="aiQuery" placeholder="Tanyakan sesuatu..." onkeypress="if(event.key==='Enter') askAI()">
@@ -561,23 +531,34 @@
     let userData = { ucp: '', char: '' };
     let cart = [];
 
-    function submitLogin(e) {
-      e.preventDefault();
-      userData.ucp = document.getElementById('ucpInput').value;
-      userData.char = document.getElementById('charInput').value;
+    // FUNGSI LOGIN UTAMA (LANGSUNG MEMBUKA ETALASE)
+    function doLogin() {
+      const ucpVal = document.getElementById('ucpInput').value.trim();
+      const charVal = document.getElementById('charInput').value.trim();
+
+      if (!ucpVal || !charVal) {
+        alert("Harap isi Nama UCP dan Nama Character (IC) terlebih dahulu!");
+        return;
+      }
+
+      userData.ucp = ucpVal;
+      userData.char = charVal;
 
       document.getElementById('userBadge').innerText = `UCP: ${userData.ucp} | IC: ${userData.char}`;
-      
-      // Animasi transisi Noderen
+
+      // Sembunyikan layar login
       const overlay = document.getElementById('loginOverlay');
       overlay.style.opacity = '0';
       overlay.style.visibility = 'hidden';
-      
+
+      // Tampilkan etalase
       document.getElementById('mainContent').style.display = 'block';
 
-      // Otomatis putar radio jika diizinkan browser
+      // Putar musik jika bisa
       const radio = document.getElementById('gtaRadio');
-      radio.play().catch(() => console.log("Autoplay blocked by browser policy"));
+      if (radio) {
+        radio.play().catch(() => console.log("Autoplay blocked"));
+      }
     }
 
     function addToCart(item, price) {
@@ -587,42 +568,29 @@
     }
 
     function checkoutWA() {
-  if (cart.length === 0) {
-    alert("Keranjang belanja Anda masih kosong!");
-    return;
-  }
+      if (cart.length === 0) {
+        alert("Keranjang belanja Anda masih kosong!");
+        return;
+      }
 
-  // Gunakan format angka murni (tanpa tanda +, spasi, atau strip)
-  let adminWA = "+62 823-4586-1313"; 
-  let total = 0;
-  let itemList = "";
+      let adminWA = "+6282345861313"; // Nomor WA Admin
+      let total = 0;
+      let itemList = "";
 
-  cart.forEach((c, index) => {
-    itemList += `${index + 1}. ${c.item} - Rp ${c.price.toLocaleString('id-ID')}\n`;
-    total += c.price;
-  });
+      cart.forEach((c, index) => {
+        itemList += `${index + 1}. ${c.item} - Rp ${c.price.toLocaleString('id-ID')}\n`;
+        total += c.price;
+      });
 
-  // Susun teks pesan secara rapi
-  let text = `*PESANAN BARU - GHIRP STORE*\n\n` +
-             `*Data Player:*\n` +
-             `- UCP: ${userData.ucp}\n` +
-             `- IC: ${userData.char}\n\n` +
-             `*Daftar Belanja:*\n${itemList}\n` +
-             `*Total:* Rp ${total.toLocaleString('id-ID')}`;
-
-  // Encode pesan teks agar format baris baru (\n) terbaca sempurna di WhatsApp
-  let encodedText = encodeURIComponent(text);
-
-  // Buka WhatsApp Web / Aplikasi
-  window.open(`https://wa.me/${adminWA}?text=${encodedText}`, '_blank');
-}
-
-      let text = `*PESANAN BARU - GHIRP STORE*%0A%0A` +
-                 `*Data Player:*%0A- UCP: ${userData.ucp}%0A- IC: ${userData.char}%0A%0A` +
-                 `*Daftar Belanja:*%0A${itemList}%0A` +
+      let text = `*PESANAN BARU - GHIRP STORE*\n\n` +
+                 `*Data Player:*\n` +
+                 `- UCP: ${userData.ucp}\n` +
+                 `- IC: ${userData.char}\n\n` +
+                 `*Daftar Belanja:*\n${itemList}\n` +
                  `*Total:* Rp ${total.toLocaleString('id-ID')}`;
 
-      window.open(`https://wa.me/${adminWA}?text=${text}`, '_blank');
+      let encodedText = encodeURIComponent(text);
+      window.open(`https://wa.me/${adminWA}?text=${encodedText}`, '_blank');
     }
 
     function toggleAI() {
@@ -636,27 +604,22 @@
       if (!query) return;
 
       const logs = document.getElementById('aiLogs');
-      
-      // Pesan User
-      logs.innerHTML += `<div class="ai-msg user">${input.value}</div>`;
+      logs.innerHTML += `<div class="ai-msg" style="text-align:right;">${input.value}</div>`;
       input.value = '';
 
-      // AI Response Logic
-      let reply = "Maaf, saya tidak mengerti. Coba tanyakan tentang 'mansion', 'sultan', 'brankas', atau 'cara beli'.";
+      let reply = "Saya belum mengerti. Tanyakan seputar 'mansion', 'sultan', atau 'cara beli'.";
       if (query.includes('mansion')) {
-        reply = "Mansion seharga Rp 100.000 memiliki brankas Unlimited, fasilitas Gate, Helipad, serta opsi bagi kunci ke 3 teman!";
+        reply = "Mansion Rp 100.000 memiliki brankas Unlimited, Gate, Helipad, & opsi kunci 3 teman.";
       } else if (query.includes('sultan')) {
-        reply = "Paket Sultan harganya Rp 150.000 mencakup Super GT, Rumah Kontemporer, VIP 30 Hari, Level +10, dan Uang IC $20.000.";
-      } else if (query.includes('cara beli') || query.includes('beli')) {
-        reply = "Pilih item di etalase, klik '+ Tambah Pesanan', lalu klik tombol Keranjang di pojok kanan bawah untuk otomatis terhubung ke WhatsApp Admin.";
-      } else if (query.includes('brankas')) {
-        reply = "Kapasitas brankas rumah: Standar (450KG), Medium (500KG), High (700KG), dan Mansion (Unlimited).";
+        reply = "Paket Sultan Rp 150.000 mencakup Super GT, Rumah Kontemporer, VIP 30H, Level +10, & $20.000.";
+      } else if (query.includes('beli') || query.includes('cara')) {
+        reply = "Klik '+ Tambah Pesanan' pada paket, lalu klik Keranjang di kanan bawah untuk pesan via WA.";
       }
 
       setTimeout(() => {
-        logs.innerHTML += `<div class="ai-msg bot">${reply}</div>`;
+        logs.innerHTML += `<div class="ai-msg" style="color:var(--primary-cyan);">${reply}</div>`;
         logs.scrollTop = logs.scrollHeight;
-      }, 500);
+      }, 400);
     }
   </script>
 </body>
